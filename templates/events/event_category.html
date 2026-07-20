@@ -1,0 +1,258 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Event Category List
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <!-- Page Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Event Category List
+            </h3>
+
+            <small class="text-muted">
+                <a href="{% url 'dashboard' %}" class="text-decoration-none">
+                    Home
+                </a>
+                /
+                Event Category List
+            </small>
+
+        </div>
+
+        <a href="{% url 'create_event_category' %}" class="btn btn-success">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Create New Category
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Success Message -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+        <div class="alert alert-success alert-dismissible fade show">
+
+            {{ message }}
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+            </button>
+
+        </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+
+    <!-- Card -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-4">
+
+                    <h5 class="mb-0">
+                        Event Category List
+                    </h5>
+
+                </div>
+
+                <div class="col-md-8">
+
+                    <div class="d-flex justify-content-end">
+
+                        <input
+                            type="text"
+                            class="form-control w-25 me-2"
+                            placeholder="Search">
+
+                        <button class="btn btn-outline-secondary me-2">
+
+                            <i class="bi bi-search"></i>
+
+                        </button>
+
+                        <button class="btn btn-outline-dark me-2">
+
+                            <i class="bi bi-list"></i>
+
+                            List
+
+                        </button>
+
+                        <button class="btn btn-outline-dark">
+
+                            <i class="bi bi-grid"></i>
+
+                            Grid
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card-body p-0">
+
+            <table class="table table-bordered table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th width="60">ID</th>
+
+                        <th>Name</th>
+
+                        <th>Code</th>
+
+                        <th width="130">Image</th>
+
+                        <th width="100">Priority</th>
+
+                        <th width="120">Status</th>
+
+                        <th width="180">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for category in categories %}
+
+                    <tr>
+
+                        <td>
+                            {{ category.id }}
+                        </td>
+
+                        <td>
+                            {{ category.category_name }}
+                        </td>
+
+                        <td>
+                            {{ category.code }}
+                        </td>
+
+                        <td>
+
+                            {% if category.image %}
+
+                                <img
+                                    src="{{ category.image.url }}"
+                                    width="70"
+                                    height="55"
+                                    class="rounded border">
+
+                            {% else %}
+
+                                <span class="text-muted">
+                                    No Image
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ category.priority }}
+
+                        </td>
+
+                        <td>
+
+                            {% if category.status %}
+
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-sm btn-primary">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                                Edit
+
+                            </button>
+
+                            <button class="btn btn-sm btn-danger">
+
+                                <i class="bi bi-trash"></i>
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center py-4">
+
+                            No Event Categories Found
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

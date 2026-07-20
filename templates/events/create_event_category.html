@@ -1,0 +1,144 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Create Event Category
+{% endblock %}
+
+{% block css %}
+
+<style>
+
+.card{
+    border:1px solid #dee2e6;
+    box-shadow:none;
+}
+
+.card-header{
+    background:#ffffff;
+    border-bottom:1px solid #dee2e6;
+}
+
+.form-label{
+    font-weight:600;
+}
+
+.required{
+    color:red;
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+                Create Event Category
+            </h3>
+
+            <a href="{% url 'category_list' %}" class="btn btn-success">
+                Category List
+            </a>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Name <span class="required">*</span>
+                    </label>
+
+                    {{ form.category_name }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Code <span class="required">*</span>
+                    </label>
+
+                    {{ form.code }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Image
+                    </label>
+
+                    {{ form.image }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Priority <span class="required">*</span>
+                    </label>
+
+                    {{ form.priority }}
+
+                </div>
+
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Status <span class="required">*</span>
+                    </label>
+
+                    {{ form.status }}
+
+                </div>
+
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                </div>
+
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-plus"></i>
+                    Create Category
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

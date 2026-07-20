@@ -1,0 +1,180 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Event Management Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid p-4">
+
+    <!-- Header -->
+    <div class="border border-2 border-primary rounded-3 shadow-sm bg-white p-3 mb-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+                <h3 class="text-primary fw-bold mb-1">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Event Management Dashboard
+                </h3>
+
+                <small class="text-secondary">
+                    Manage Events, Categories and Users
+                </small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Cards -->
+    <div class="row g-3">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-primary text-white shadow-sm border-0">
+                <div class="card-body text-center py-4">
+                    <i class="fa-solid fa-list fa-2x mb-2"></i>
+                    <h2 class="fw-bold">10</h2>
+                    <p class="mb-3">Event Categories</p>
+                    <button class="btn btn-light btn-sm">More Info</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-success text-white shadow-sm border-0">
+                <div class="card-body text-center py-4">
+                    <i class="fa-solid fa-calendar-days fa-2x mb-2"></i>
+                    <h2 class="fw-bold">35</h2>
+                    <p class="mb-3">Total Events</p>
+                    <button class="btn btn-light btn-sm">More Info</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-warning text-white shadow-sm border-0">
+                <div class="card-body text-center py-4">
+                    <i class="fa-solid fa-users fa-2x mb-2"></i>
+                    <h2 class="fw-bold">540</h2>
+                    <p class="mb-3">User Registrations</p>
+                    <button class="btn btn-light btn-sm">More Info</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card bg-danger text-white shadow-sm border-0">
+                <div class="card-body text-center py-4">
+                    <i class="fa-solid fa-circle-check fa-2x mb-2"></i>
+                    <h2 class="fw-bold">20</h2>
+                    <p class="mb-3">Completed Events</p>
+                    <button class="btn btn-light btn-sm">More Info</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-table-list"></i>
+                    Event List
+                </h5>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Event Name</th>
+                        <th>Category</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Venue</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>Tech Fest</td>
+                        <td>Technical</td>
+                        <td>10-07-2026</td>
+                        <td>12-07-2026</td>
+                        <td>Auditorium</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Sports Meet</td>
+                        <td>Sports</td>
+                        <td>15-07-2026</td>
+                        <td>16-07-2026</td>
+                        <td>Ground</td>
+                        <td><span class="badge bg-info">Completed</span></td>
+                        <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Cultural Night</td>
+                        <td>Cultural</td>
+                        <td>20-07-2026</td>
+                        <td>20-07-2026</td>
+                        <td>Main Stage</td>
+                        <td><span class="badge bg-danger">Pending</span></td>
+                        <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>Hackathon</td>
+                        <td>Technical</td>
+                        <td>25-07-2026</td>
+                        <td>26-07-2026</td>
+                        <td>Lab 1</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>Workshop</td>
+                        <td>Seminar</td>
+                        <td>28-07-2026</td>
+                        <td>28-07-2026</td>
+                        <td>Conference Hall</td>
+                        <td><span class="badge bg-info">Completed</span></td>
+                        <td><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
