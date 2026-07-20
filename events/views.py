@@ -99,3 +99,13 @@ def category_list(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+@login_required
+def delete_category(request, id):
+    category = get_object_or_404(EventCategory, id=id)
+
+    category.delete()
+
+    messages.success(request, "Category Deleted Successfully")
+
+    return redirect("category_list")
