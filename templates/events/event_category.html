@@ -213,9 +213,10 @@ Event Category List
 
                             <button class="btn btn-sm btn-primary">
 
-                                <i class="bi bi-pencil-square"></i>
-
-                                Edit
+                                <a href="{% url 'edit_category' category.id %}" class="btn btn-primary btn-sm">
+    <i class="fa-solid fa-pen"></i>
+    Edit
+</a>
 
                             </button>
 

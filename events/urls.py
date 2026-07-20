@@ -25,4 +25,9 @@ urlpatterns = [
         views.logout_view,
         name='logout'
     ),
+    path(
+    'edit-category/<int:id>/',
+    views.edit_category,
+    name='edit_category'
+),
 ]

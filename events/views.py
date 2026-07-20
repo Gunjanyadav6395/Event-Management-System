@@ -5,6 +5,32 @@ from django.contrib.auth import logout
 from .models import EventCategory
 from django.contrib import messages
 from .forms import EventCategoryForm
+from django.shortcuts import get_object_or_404
+
+@login_required
+def edit_category(request, id):
+    category = get_object_or_404(EventCategory, id=id)
+
+    if request.method == "POST":
+        category.category_name = request.POST.get("category_name")
+        category.code = request.POST.get("code")
+        category.priority = request.POST.get("priority")
+        category.status = request.POST.get("status")
+
+        if request.FILES.get("image"):
+            category.image = request.FILES.get("image")
+
+        category.save()
+
+        return redirect("category_list")
+
+    return render(
+        request,
+        "events/edit_event_category.html",
+        {
+            "category": category
+        }
+    )
 
 @login_required
 def create_event_category(request):
@@ -47,11 +73,17 @@ def login_view(request):
 
     return render(request, "login.html")
 
-
 @login_required
 def dashboard(request):
-    return render(request, "events/dashboard.html")
+    context = {
+        "total_categories": EventCategory.objects.count(),
+    }
 
+    return render(
+        request,
+        "events/dashboard.html",
+        context
+    )
 
 @login_required
 def admin_dashboard(request):
