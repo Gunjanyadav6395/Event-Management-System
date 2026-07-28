@@ -1,0 +1,239 @@
+{% extends 'base/user_base.html' %}
+{% load static %}
+
+{% block title %}
+Upcoming Events
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Heading -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="page-title">
+
+            Upcoming Events
+
+        </h1>
+
+        <p class="text-muted fs-5">
+
+            Explore upcoming events and register to become a participant.
+
+        </p>
+
+    </div>
+
+    <!-- Search -->
+
+    <div class="row justify-content-center mb-5">
+
+        <div class="col-lg-6">
+
+            <form method="GET">
+
+                <div class="input-group search-box">
+
+                    <input
+                        type="text"
+                        name="q"
+                        class="form-control"
+                        placeholder="Search by event, category or venue..."
+                        value="{{ request.GET.q }}"
+
+                    <button class="btn btn-primary event-btn">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Search Result -->
+
+    {% if query %}
+
+    <div class="alert alert-info">
+
+        Search Result for :
+
+        <strong>
+
+            "{{ query }}"
+
+        </strong>
+
+    </div>
+
+    {% endif %}
+
+    <!-- Events -->
+
+    <div class="row justify-content-center g-4">
+
+        {% for event in events %}
+
+        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-10">
+
+            <div class="card event-card h-100">
+
+                <!-- Image -->
+
+                <div class="position-relative">
+
+                    {% if event.image %}
+
+                    <img
+                        src="{{ event.image.url }}"
+                        class="card-img-top event-image"
+                        alt="{{ event.event_name }}">
+
+                    {% else %}
+
+                    <img
+                        src="{% static 'images/default-event.jpg' %}"
+                        class="card-img-top event-image"
+                        alt="No Image">
+
+                    {% endif %}
+
+                    <div class="event-overlay"></div>
+
+                    <div class="status-badge">
+
+                        {% if event.status %}
+
+                        <span class="badge bg-success">
+
+                            Registration Open
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-danger">
+
+                            Registration Closed
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <!-- Card Body -->
+
+                <div class="card-body">
+
+                    <span class="badge bg-primary event-category mb-3">
+
+                        <i class="fa-solid fa-layer-group me-1"></i>
+
+                        {{ event.category }}
+
+                    </span>
+
+                    <h4 class="fw-bold mb-3">
+
+                        {{ event.event_name }}
+
+                    </h4>
+
+                    <p class="info-text">
+
+                        <i class="fa-solid fa-location-dot text-danger me-2"></i>
+
+                        {{ event.venue }}
+
+                    </p>
+
+                    <p class="info-text">
+
+                        <i class="fa-solid fa-calendar-days text-success me-2"></i>
+
+                        {{ event.start_date|date:"d M Y" }}
+
+                    </p>
+
+                    <p class="info-text">
+
+                        <i class="fa-solid fa-clock text-warning me-2"></i>
+
+                        Ends :
+
+                        {{ event.end_date|date:"d M Y" }}
+
+                    </p>
+
+                    <hr>
+
+                    <p class="text-secondary">
+
+                        {{ event.description|default:"No description available."|truncatewords:20 }}
+
+                    </p>
+
+                </div>
+
+                <!-- Footer -->
+
+                <div class="card-footer bg-white border-0">
+
+                    <a
+                        href="{% url 'user_event_detail' event.id %}"
+                        class="btn btn-primary w-100">
+
+                        <i class="fa-solid fa-eye me-2"></i>
+
+                        View Details
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="alert alert-warning text-center p-5">
+
+                <i class="fa-solid fa-calendar-xmark fa-3x mb-3"></i>
+
+                <h4>
+
+                    No Events Available
+
+                </h4>
+
+                <p>
+
+                    Please check again later.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

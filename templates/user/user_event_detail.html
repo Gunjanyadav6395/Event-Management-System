@@ -1,0 +1,291 @@
+{% extends 'base/user_base.html' %}
+{% load static %}
+
+{% block title %}
+{{ event.event_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+
+            <h2 class="fw-bold page-title">
+
+                <i class="fa-solid fa-calendar-days text-primary me-2"></i>
+
+                {{ event.event_name }}
+
+            </h2>
+
+            <p class="text-muted">
+
+                View complete information about this event.
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'user_event_list' %}"
+           class="btn btn-outline-primary rounded-pill px-4">
+
+            <i class="fa-solid fa-arrow-left me-2"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+
+    <!-- Main Card -->
+
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden event-detail-card">
+
+        <div class="row g-0">
+
+            <!-- Image -->
+
+            <div class="col-lg-5 position-relative">
+
+                {% if event.image %}
+
+                    <img
+                        src="{{ event.image.url }}"
+                        class="img-fluid event-detail-image"
+                        alt="{{ event.event_name }}">
+
+                {% else %}
+
+                    <img
+                        src="{% static 'images/default-event.jpg' %}"
+                        class="img-fluid event-detail-image"
+                        alt="No Image">
+
+                {% endif %}
+
+                <div class="event-detail-overlay"></div>
+
+                <div class="position-absolute top-0 end-0 m-3">
+
+                    {% if event.status %}
+
+                        <span class="badge bg-success fs-6">
+
+                            Registration Open
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-danger fs-6">
+
+                            Registration Closed
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Details -->
+
+            <div class="col-lg-7">
+
+                <div class="p-4 p-lg-5">
+
+                    <span class="badge bg-primary fs-6 mb-3">
+
+                        <i class="fa-solid fa-layer-group me-1"></i>
+
+                        {{ event.category }}
+
+                    </span>
+
+                    <h2 class="fw-bold mb-4">
+
+                        {{ event.event_name }}
+
+                    </h2>
+
+                    <div class="row gy-4">
+
+                        <div class="col-md-6">
+
+                            <div class="detail-box">
+
+                                <i class="fa-solid fa-calendar-days text-success"></i>
+
+                                <div>
+
+                                    <small>Start Date</small>
+
+                                    <h6>
+
+                                        {{ event.start_date|date:"d M Y" }}
+
+                                    </h6>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="detail-box">
+
+                                <i class="fa-solid fa-calendar-check text-danger"></i>
+
+                                <div>
+
+                                    <small>End Date</small>
+
+                                    <h6>
+
+                                        {{ event.end_date|date:"d M Y" }}
+
+                                    </h6>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="detail-box">
+
+                                <i class="fa-solid fa-location-dot text-primary"></i>
+
+                                <div>
+
+                                    <small>Venue</small>
+
+                                    <h6>
+
+                                        {{ event.venue }}
+
+                                    </h6>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="detail-box">
+
+                                <i class="fa-solid fa-layer-group text-warning"></i>
+
+                                <div>
+
+                                    <small>Priority</small>
+
+                                    <h6>
+
+                                        {{ event.priority }}
+
+                                    </h6>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="my-4">
+
+
+                    <h5 class="fw-bold">
+
+                        <i class="fa-solid fa-circle-info text-primary me-2"></i>
+
+                        About This Event
+
+                    </h5>
+
+                    <p class="text-muted lh-lg">
+
+                        {{ event.description|default:"No description available." }}
+
+                    </p>
+
+
+                    <div class="mt-5 d-flex gap-3 flex-wrap">
+
+                        {% if event.status %}
+
+    {% if registered %}
+
+        <button class="btn btn-success px-5" disabled>
+
+            <i class="fa-solid fa-circle-check me-2"></i>
+
+            Already Registered
+
+        </button>
+
+    {% else %}
+
+        <a href="{% url 'register_event' event.id %}"
+           class="btn btn-primary px-5">
+
+            <i class="fa-solid fa-user-plus me-2"></i>
+
+            Register Now
+
+        </a>
+
+    {% endif %}
+
+{% else %}
+
+    <button class="btn btn-secondary px-5" disabled>
+
+        <i class="fa-solid fa-lock me-2"></i>
+
+        Registration Closed
+
+    </button>
+
+{% endif %}
+
+                        <a href="{% url 'user_event_list' %}"
+                           class="btn btn-outline-dark px-5">
+
+                            Browse Events
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Add Event Wish User
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-white">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h3 class="mb-0">
+                    Add Event User Wish
+                </h3>
+
+                <a href="{% url 'event_wish_user_list' %}"
+                   class="btn btn-success">
+
+                    Event Wish List
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        Event*
+                    </label>
+
+                    {{ form.event }}
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        User*
+                    </label>
+
+                    {{ form.user }}
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        Status*
+                    </label>
+
+                    {{ form.status }}
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+
+                    Add
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

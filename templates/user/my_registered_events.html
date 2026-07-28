@@ -1,0 +1,105 @@
+{% extends 'base/user_base.html' %} {% load static %} {% block title %} My
+Registered Events {% endblock %} {% block content %}
+
+<div class="container py-5">
+  <!-- Heading -->
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold">
+        <i class="fa-solid fa-ticket text-primary me-2"></i>
+
+        My Registered Events
+      </h2>
+
+      <p class="text-muted mb-0">
+        All events you have successfully registered for.
+      </p>
+    </div>
+
+    <a href="{% url 'user_event_list' %}" class="btn btn-outline-primary">
+      <i class="fa-solid fa-calendar-plus me-2"></i>
+
+      Explore More Events
+    </a>
+  </div>
+
+  <div class="row">
+    {% for member in members %}
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card shadow border-0 rounded-4 h-100">
+        {% if member.event.image %}
+
+        <img
+          src="{{ member.event.image.url }}"
+          class="card-img-top"
+          style="height: 220px; object-fit: cover"
+        />
+
+        {% else %}
+
+        <img
+          src="{% static 'images/default-event.jpg' %}"
+          class="card-img-top"
+          style="height: 220px; object-fit: cover"
+        />
+
+        {% endif %}
+
+        <div class="card-body">
+          <span class="badge bg-primary mb-2">
+            {{ member.event.category }}
+          </span>
+
+          <h5 class="fw-bold">{{ member.event.event_name }}</h5>
+
+          <p class="mb-2 text-muted">
+            <i class="fa-solid fa-calendar-days text-success me-2"></i>
+
+            {{ member.event.start_date|date:"d M Y" }}
+          </p>
+
+          <p class="mb-2 text-muted">
+            <i class="fa-solid fa-location-dot text-danger me-2"></i>
+
+            {{ member.event.venue }}
+          </p>
+
+          <span class="badge bg-success"> Registered </span>
+        </div>
+
+        <div class="card-footer bg-white border-0">
+          <a
+            href="{% url 'user_event_detail' member.event.id %}"
+            class="btn btn-primary w-100"
+          >
+            <i class="fa-solid fa-eye me-2"></i>
+
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {% empty %}
+
+    <div class="col-12">
+      <div class="text-center py-5">
+        <i class="fa-solid fa-calendar-xmark fa-4x text-secondary mb-3"></i>
+
+        <h4>No Registered Events</h4>
+
+        <p class="text-muted">You haven't registered for any event yet.</p>
+
+        <a href="{% url 'user_event_list' %}" class="btn btn-primary">
+          Browse Events
+        </a>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

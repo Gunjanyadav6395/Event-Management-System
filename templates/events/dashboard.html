@@ -44,7 +44,7 @@ Dashboard
 
         <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="card bg-primary text-white shadow border-0">
+            <div class="card bg-primary text-white shadow border-0 h-100">
 
                 <div class="card-body text-center">
 
@@ -77,21 +77,21 @@ Dashboard
 
         <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="card bg-success text-white shadow border-0">
+            <div class="card bg-success text-white shadow border-0 h-100">
 
                 <div class="card-body text-center">
 
                     <i class="fa-solid fa-calendar-days fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-                        0
-                    </h2>
+    {{ total_events }}
+</h2>
 
                     <h5 class="mb-3">
                         Total Events
                     </h5>
 
-                    <a href="#"
+                    <a href="{% url 'event_list' %}"
                        class="btn btn-light btn-sm">
 
                         <i class="fa-solid fa-arrow-right"></i>
@@ -110,15 +110,15 @@ Dashboard
 
         <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="card bg-warning text-dark shadow border-0">
+            <div class="card bg-warning text-dark shadow border-0 h-100">
 
                 <div class="card-body text-center">
 
                     <i class="fa-solid fa-users fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-                        0
-                    </h2>
+    {{ total_users }}
+</h2>
 
                     <h5 class="mb-3">
                         Users
@@ -143,21 +143,21 @@ Dashboard
 
         <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="card bg-danger text-white shadow border-0">
+            <div class="card bg-danger text-white shadow border-0 h-100">
 
                 <div class="card-body text-center">
 
                     <i class="fa-solid fa-circle-check fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-                        0
-                    </h2>
+    {{ completed_events }}
+</h2>
 
                     <h5 class="mb-3">
                         Completed Events
                     </h5>
 
-                    <a href="#"
+                    <a href="{% url 'event_list' %}"
                        class="btn btn-light btn-sm">
 
                         <i class="fa-solid fa-arrow-right"></i>
@@ -210,18 +210,63 @@ Dashboard
 
                 <tbody>
 
-                    <tr>
+    {% for event in recent_events %}
 
-                        <td colspan="5" class="text-center text-muted py-4">
+    <tr>
 
-                            No Events Available
+        <td>{{ event.id }}</td>
 
-                        </td>
+        <td>{{ event.event_name }}</td>
 
-                    </tr>
+        <td>{{ event.category.category_name }}</td>
 
-                </tbody>
+        <td>
 
+            {% if event.status %}
+
+                <span class="badge bg-success">
+                    Active
+                </span>
+
+            {% else %}
+
+                <span class="badge bg-danger">
+                    Inactive
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+
+            <a href="{% url 'edit_event' event.id %}"
+               class="btn btn-warning btn-sm">
+
+                <i class="fa-solid fa-pen"></i>
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% empty %}
+
+    <tr>
+
+        <td colspan="5"
+            class="text-center text-muted py-4">
+
+            No Recent Events Available
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</tbody>
             </table>
 
         </div>

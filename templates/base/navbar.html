@@ -1,16 +1,421 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+{% load static %}
 
-    <div class="d-flex gap-2">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
 
-    <a href="{% url 'admin_dashboard' %}" class="btn btn-warning">
-        <i class="fa-solid fa-user-shield"></i>
-        Admin Panel
+    <div class="container-fluid">
+
+        <!-- Sidebar Toggle -->
+        <button
+    id="toggleSidebar"
+    class="btn text-white border-0 me-3 fs-5">
+
+    <i class="fa-solid fa-bars"></i>
+
+</button>
+
+        <!-- Left Menu -->
+        <ul class="navbar-nav d-none d-lg-flex">
+
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link px-3 text-white">
+    Accueil
+</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{% url 'contact' %}" class="nav-link px-3 text-white">
+    Contact
+</a>
+            </li>
+
+        </ul>
+
+        <!-- Search -->
+        <form class="d-flex mx-4"
+      style="width:320px;"
+      method="GET"
+      action="{% url 'event_list' %}">
+
+    <div class="input-group">
+
+        <input
+            type="search"
+            class="form-control border-0"
+            placeholder="Search by Event, Category or Venue..."
+            name="q"
+            value="{{ request.GET.q }}">
+
+        <button class="btn btn-light" type="submit">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </button>
+
+    </div>
+
+</form>
+
+        <!-- Right Menu -->
+        <ul class="navbar-nav ms-auto align-items-center">
+
+          <!-- Chat -->
+<li class="nav-item dropdown me-3">
+
+    <a class="nav-link text-white nav-icon"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown">
+
+        <i class="fa-regular fa-comments"></i>
+
+        <span class="badge rounded-pill bg-danger nav-badge">
+    {{ chat_count }}
+</span>
+
     </a>
 
-    <a href="{% url 'logout' %}" class="btn btn-danger">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
+    <ul class="dropdown-menu dropdown-menu-end shadow"
+    style="width:320px;">
+
+    <li class="dropdown-header fw-bold">
+        Messages
+    </li>
+
+    <li><hr class="dropdown-divider"></li>
+
+    {% for member in recent_join_members %}
+
+    <li>
+
+        <a class="dropdown-item"
+           href="{% url 'event_member_list' %}">
+
+            <div class="d-flex align-items-center">
+
+                <img src="{% static 'images/default-user.png' %}"
+                     class="rounded-circle me-2 border"
+                     width="40"
+                     height="40"
+                     alt="User">
+
+                <div>
+
+                    <strong>{{ member.user.username }}</strong><br>
+
+                    <small class="text-muted">
+
+                        Joined {{ member.event.event_name }}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </li>
+
+    {% empty %}
+
+    <li>
+
+        <span class="dropdown-item text-muted">
+
+            No Messages Available
+
+        </span>
+
+    </li>
+
+    {% endfor %}
+
+    <li><hr class="dropdown-divider"></li>
+
+    <li>
+
+        <a href="{% url 'event_member_list' %}"
+           class="dropdown-item text-center text-primary fw-bold">
+
+            View All Members
+
+        </a>
+
+    </li>
+
+</ul>
+
+</li>
+
+           <!-- Notification -->
+<li class="nav-item dropdown me-3">
+
+    <a class="nav-link text-white nav-icon position-relative"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown">
+
+        <i class="fa-regular fa-bell fs-5"></i>
+
+        <span class="badge rounded-pill bg-warning text-dark nav-badge">
+            {{ notification_count }}
+        </span>
+
     </a>
 
-</div>
+    <ul class="dropdown-menu dropdown-menu-end shadow"
+        style="min-width:320px;">
+
+        <li>
+
+            <h6 class="dropdown-header">
+
+                Notifications
+
+            </h6>
+
+        </li>
+
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <!-- Recent Events -->
+
+        {% for event in recent_events %}
+
+        <li>
+
+            <a class="dropdown-item" href="{% url 'event_list' %}">
+
+                <i class="fa-solid fa-calendar-days text-success me-2"></i>
+
+                New Event :
+                <strong>{{ event.event_name }}</strong>
+
+            </a>
+
+        </li>
+
+        {% endfor %}
+
+        <!-- Categories -->
+
+        {% for category in recent_categories %}
+
+        <li>
+
+            <a class="dropdown-item" href="{% url 'category_list' %}">
+
+                <i class="fa-solid fa-folder text-primary me-2"></i>
+
+                Category :
+                <strong>{{ category.category_name }}</strong>
+
+            </a>
+
+        </li>
+
+        {% endfor %}
+
+        <!-- Members -->
+
+        {% for member in recent_members %}
+
+        <li>
+
+            <a class="dropdown-item"
+               href="{% url 'event_member_list' %}">
+
+                <i class="fa-solid fa-user text-danger me-2"></i>
+
+                {{ member.user.username }}
+
+                joined
+
+                {{ member.event.event_name }}
+
+            </a>
+
+        </li>
+
+        {% endfor %}
+
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li>
+
+            <a href="{% url 'dashboard' %}"
+               class="dropdown-item text-center fw-bold">
+
+                View Dashboard
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</li>
+
+            <!-- Grid -->
+            <!-- Quick Menu -->
+<li class="nav-item dropdown me-3">
+
+    <a class="nav-link text-white"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown">
+
+        <i class="fa-solid fa-table-cells-large"></i>
+
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-end p-3 shadow"
+         style="width:320px;">
+
+        <div class="row text-center g-3">
+
+            <div class="col-4">
+                <a href="{% url 'dashboard' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-house fa-2x text-primary"></i>
+                    <div class="small mt-2">Dashboard</div>
+                </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'category_list' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-folder fa-2x text-warning"></i>
+                    <div class="small mt-2">Categories</div>
+                </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'event_list' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-calendar-days fa-2x text-success"></i>
+                    <div class="small mt-2">Events</div>
+                </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'event_member_list' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-users fa-2x text-info"></i>
+                    <div class="small mt-2">Members</div>
+                </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'event_wish_list' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-heart fa-2x text-danger"></i>
+                    <div class="small mt-2">Wish List</div>
+                </a>
+            </div>
+
+            <div class="col-4">
+                <a href="{% url 'contact' %}"
+                   class="text-decoration-none text-dark">
+                    <i class="fa-solid fa-envelope fa-2x text-secondary"></i>
+                    <div class="small mt-2">Contact</div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</li>
+
+            <!-- User Profile Dropdown -->
+
+<li class="nav-item dropdown">
+
+    <a class="nav-link dropdown-toggle d-flex align-items-center"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown">
+
+        <div class="profile-wrapper">
+
+            <img src="{% static 'images/logo.png' %}"
+                 class="profile-img"
+                 alt="Profile">
+
+            <span class="online-dot"></span>
+
+        </div>
+
+        <span class="fw-semibold ms-2">
+            Gunjan
+        </span>
+
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow">
+
+        <li class="dropdown-header">
+
+            <strong>Gunjan</strong><br>
+
+            <small class="text-muted">
+                Administrator
+            </small>
+
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
+
+        <li>
+
+            <a class="dropdown-item" href="#">
+
+                <i class="fa-solid fa-user me-2"></i>
+
+                Profile
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="dropdown-item" href="#">
+
+                <i class="fa-solid fa-gear me-2"></i>
+
+                Settings
+
+            </a>
+
+        </li>
+
+        <li><hr class="dropdown-divider"></li>
+
+        <li>
+
+            <a class="dropdown-item text-danger"
+               href="{% url 'logout' %}">
+
+                <i class="fa-solid fa-right-from-bracket me-2"></i>
+
+                Logout
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</li>
+
+        </ul>
+
+    </div>
+
 </nav>

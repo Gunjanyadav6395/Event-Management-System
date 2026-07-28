@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Contact Us
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="row mb-4">
+
+        <div class="col-12">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        <i class="fa-solid fa-envelope text-primary"></i>
+                        Contact Us
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        We'd love to hear from you.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Success Messages -->
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-success alert-dismissible fade show">
+
+                {{ message }}
+
+                <button class="btn-close"
+                        data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <div class="row">
+
+        <!-- Contact Information -->
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow border-0 h-100">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-address-book"></i>
+
+                        Contact Information
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+
+                        <i class="fa-solid fa-location-dot text-danger me-2"></i>
+
+                        New Delhi, India
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-phone text-success me-2"></i>
+
+                        +91 9876543210
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-envelope text-primary me-2"></i>
+
+                        support@eventmanagement.com
+
+                    </p>
+
+                    <p>
+
+                        <i class="fa-solid fa-clock text-warning me-2"></i>
+
+                        Mon - Sat : 9:00 AM - 6:00 PM
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Contact Form -->
+
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Send Message
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Full Name
+
+                                </label>
+
+                                {{ form.full_name }}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Email Address
+
+                                </label>
+
+                                {{ form.email }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Subject
+
+                            </label>
+
+                            {{ form.subject }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Message
+
+                            </label>
+
+                            {{ form.message }}
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-4">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Send Message
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

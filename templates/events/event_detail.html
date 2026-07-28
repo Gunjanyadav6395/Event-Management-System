@@ -1,0 +1,303 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Event Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h3 class="fw-bold">
+            <i class="fa-solid fa-calendar-days text-primary me-2"></i>
+            Event Details
+        </h3>
+
+        <a href="{% url 'event_list' %}" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left me-1"></i>
+            Back
+        </a>
+
+    </div>
+
+    <!-- Event Details Card -->
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+                <i class="fa-solid fa-circle-info me-2"></i>
+                Event Information
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- Event Image -->
+                <div class="col-md-4 text-center mb-3">
+
+                    {% if event.image %}
+
+                        <img src="{{ event.image.url }}"
+                             class="img-fluid rounded shadow border"
+                             style="max-height:280px;">
+
+                    {% else %}
+
+                        <img src="https://via.placeholder.com/300x220?text=No+Image"
+                             class="img-fluid rounded shadow border">
+
+                    {% endif %}
+
+                </div>
+
+                <!-- Event Information -->
+                <div class="col-md-8">
+
+                    <table class="table table-bordered table-striped">
+
+                        <tr>
+
+                            <th width="30%">Event Name</th>
+
+                            <td>{{ event.event_name }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Category</th>
+
+                            <td>{{ event.category }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Start Date</th>
+
+                            <td>{{ event.start_date }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>End Date</th>
+
+                            <td>{{ event.end_date }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Venue</th>
+
+                            <td>{{ event.venue }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Priority</th>
+
+                            <td>
+
+                                <span class="badge bg-info">
+                                    {{ event.priority }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Status</th>
+
+                            <td>
+
+                                {% if event.status %}
+
+                                    <span class="badge bg-success">
+
+                                        Active
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger">
+
+                                        Inactive
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Description</th>
+
+                            <td>
+
+                                {{ event.description|default:"No Description Available" }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <div class="mt-4">
+
+                        <a href="{% url 'edit_event' event.id %}"
+                           class="btn btn-warning">
+
+                            <i class="fa-solid fa-pen me-1"></i>
+
+                            Edit Event
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Participants Section -->
+    <div class="card shadow border-0 mt-4">
+
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                <i class="fa-solid fa-users me-2"></i>
+
+                Event Participants
+
+            </h5>
+
+            <span class="badge bg-success fs-6">
+
+                Total : {{ participant_count }}
+
+            </span>
+
+        </div>
+
+        <div class="card-body p-0">
+
+            {% if participants %}
+
+            <table class="table table-hover table-bordered mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Username</th>
+
+                        <th>Status</th>
+
+                        <th>Joined On</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for member in participants %}
+
+                    <tr>
+
+                        <td>
+
+                            {{ forloop.counter }}
+
+                        </td>
+
+                        <td>
+
+                            {{ member.user.username }}
+
+                        </td>
+
+                        <td>
+
+                            {% if member.status %}
+
+                                <span class="badge bg-success">
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+
+                                    Inactive
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ member.created_at|date:"d M Y" }}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <i class="fa-solid fa-users-slash fa-3x text-secondary mb-3"></i>
+
+                <h5>No Participants Found</h5>
+
+                <p class="text-muted">
+
+                    No users have joined this event yet.
+
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
