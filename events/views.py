@@ -25,37 +25,32 @@ from .forms import (
 
 def home(request):
 
-    total_categories = EventCategory.objects.count()
-
-    total_events = Event.objects.count()
-
-    total_members = EventMember.objects.count()
-
-    completed_events = Event.objects.filter(status=True).count()
-
     latest_events = Event.objects.filter(
         status=True
-    ).order_by("-created_at")[:3]
+    ).order_by("-created_at")[:6]
 
     context = {
 
-        "total_categories": total_categories,
-
-        "total_events": total_events,
-
-        "total_members": total_members,
-
-        "completed_events": completed_events,
-
         "latest_events": latest_events,
+
+        "total_events": Event.objects.count(),
+
+        "total_categories": EventCategory.objects.count(),
+
+        "total_members": EventMember.objects.count(),
+
+        "completed_events": Event.objects.filter(
+            status=True
+        ).count(),
 
     }
 
     return render(
         request,
         "user/home.html",
-        context
+        context,
     )
+
 # ===========================
 # LOGIN
 # ===========================
@@ -120,11 +115,6 @@ def logout_view(request):
 # ===========================
 # DASHBOARD
 # ===========================
-
-# ===========================
-# DASHBOARD
-# ===========================
-
 @login_required
 def dashboard(request):
 
@@ -1114,8 +1104,47 @@ def my_registered_events(request):
         }
 
     )
+# =====================================
+# USER LOGIN
+# =====================================
 
+def user_login(request):
 
+    # Agar user already login hai
+    if request.user.is_authenticated:
+        return redirect("user_event_list")
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+
+            login(request, user)
+
+            messages.success(
+                request,
+                f"Welcome back, {user.username}!"
+            )
+
+            return redirect("user_event_list")
+
+        messages.error(
+            request,
+            "Invalid Username or Password."
+        )
+
+    return render(
+        request,
+        "user/user_login.html"
+    )
 # ===========================
 # USER REGISTRATION
 # ===========================
