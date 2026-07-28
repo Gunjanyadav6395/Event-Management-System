@@ -138,3 +138,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Default Primary Key
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = "user_login"
+LOGIN_REDIRECT_URL = "user_event_list"
+LOGOUT_REDIRECT_URL = "home"

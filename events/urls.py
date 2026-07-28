@@ -229,5 +229,9 @@ urlpatterns = [
         views.my_registered_events,
         name="my_registered_events"
     ),
-
+    path(
+    "profile/",
+    views.user_profile,
+    name="user_profile"
+),
 ]

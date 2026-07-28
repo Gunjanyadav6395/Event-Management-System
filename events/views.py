@@ -1210,3 +1210,37 @@ def register_user(request):
         }
 
     )
+# =====================================
+# USER PROFILE
+# =====================================
+
+@login_required
+def user_profile(request):
+
+    total_registered_events = EventMember.objects.filter(
+        user=request.user,
+        status=True
+    ).count()
+
+    total_wishlist = EventWish.objects.filter(
+        user=request.user,
+        status=True
+    ).count()
+
+    context = {
+
+        "total_registered_events": total_registered_events,
+
+        "total_wishlist": total_wishlist,
+
+    }
+
+    return render(
+
+        request,
+
+        "user/user_profile.html",
+
+        context
+
+    )
