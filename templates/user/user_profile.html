@@ -122,18 +122,27 @@ User Profile
 
                     </table>
 
-                    <div class="text-center mt-4">
+                    <div class="d-flex gap-2 mt-4">
 
-                        <a href="{% url 'edit_profile' %}"
-                            class="btn btn-primary">
+    <a href="{% url 'edit_profile' %}"
+       class="btn btn-primary">
 
-                            <i class="fa-solid fa-user-pen me-2"></i>
+        <i class="fa-solid fa-user-pen me-2"></i>
 
-                            Edit Profile
+        Edit Profile
 
-                        </a>
+    </a>
 
-                    </div>
+    <a href="{% url 'change_password' %}"
+       class="btn btn-warning text-dark">
+
+        <i class="fa-solid fa-key me-2"></i>
+
+        Change Password
+
+    </a>
+
+</div>
 
                 </div>
 

@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash
 
 from .models import (
     EventCategory,
@@ -22,6 +23,7 @@ from .forms import (
     ContactForm,
     UserRegisterForm,
     UserProfileForm,
+    UserPasswordChangeForm,
 )
 
 def home(request):
@@ -1281,6 +1283,62 @@ def edit_profile(request):
         request,
 
         "user/edit_user_profile.html",
+
+        {
+
+            "form": form,
+
+        }
+
+    )
+# =====================================
+# CHANGE PASSWORD
+# =====================================
+
+@login_required
+def change_password(request):
+
+    if request.method == "POST":
+
+        form = UserPasswordChangeForm(
+            request.user,
+            request.POST
+        )
+
+        if form.is_valid():
+
+            user = form.save()
+
+            update_session_auth_hash(
+                request,
+                user
+            )
+
+            messages.success(
+                request,
+                "Password changed successfully."
+            )
+
+            return redirect("user_profile")
+
+        else:
+
+            messages.error(
+                request,
+                "Please correct the errors below."
+            )
+
+    else:
+
+        form = UserPasswordChangeForm(
+            request.user
+        )
+
+    return render(
+
+        request,
+
+        "user/change_password.html",
 
         {
 
