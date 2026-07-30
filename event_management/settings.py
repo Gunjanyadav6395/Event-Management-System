@@ -14,6 +14,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$b5-98j^lbp)b!os)-ow*)9z%a=8(-v9ru#su-8t7fw7majq%y'
 
 DEBUG = True
+# ==========================
+# Email Configuration
+# ==========================
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@eventhub.com"
 
 ALLOWED_HOSTS = []
 
