@@ -13,22 +13,22 @@
 
 </button>
 
-        <!-- Left Menu -->
-        <ul class="navbar-nav d-none d-lg-flex">
+        <ul class="navbar-nav me-3">
 
-            <li class="nav-item">
-                <a href="{% url 'dashboard' %}" class="nav-link px-3 text-white">
-    Accueil
-</a>
-            </li>
+    <li class="nav-item">
 
-            <li class="nav-item">
-                <a href="{% url 'contact' %}" class="nav-link px-3 text-white">
-    Contact
-</a>
-            </li>
+        <a href="{% url 'contact' %}"
+           class="nav-link text-white">
 
-        </ul>
+            <i class="fa-solid fa-envelope me-1"></i>
+
+            Contact
+
+        </a>
+
+    </li>
+
+</ul>
 
         <!-- Search -->
         <form class="d-flex mx-4"
@@ -259,79 +259,6 @@
     </ul>
 
 </li>
-
-            <!-- Grid -->
-            <!-- Quick Menu -->
-<li class="nav-item dropdown me-3">
-
-    <a class="nav-link text-white"
-       href="#"
-       role="button"
-       data-bs-toggle="dropdown">
-
-        <i class="fa-solid fa-table-cells-large"></i>
-
-    </a>
-
-    <div class="dropdown-menu dropdown-menu-end p-3 shadow"
-         style="width:320px;">
-
-        <div class="row text-center g-3">
-
-            <div class="col-4">
-                <a href="{% url 'dashboard' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-house fa-2x text-primary"></i>
-                    <div class="small mt-2">Dashboard</div>
-                </a>
-            </div>
-
-            <div class="col-4">
-                <a href="{% url 'category_list' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-folder fa-2x text-warning"></i>
-                    <div class="small mt-2">Categories</div>
-                </a>
-            </div>
-
-            <div class="col-4">
-                <a href="{% url 'event_list' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-calendar-days fa-2x text-success"></i>
-                    <div class="small mt-2">Events</div>
-                </a>
-            </div>
-
-            <div class="col-4">
-                <a href="{% url 'event_member_list' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-users fa-2x text-info"></i>
-                    <div class="small mt-2">Members</div>
-                </a>
-            </div>
-
-            <div class="col-4">
-                <a href="{% url 'event_wish_list' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-heart fa-2x text-danger"></i>
-                    <div class="small mt-2">Wish List</div>
-                </a>
-            </div>
-
-            <div class="col-4">
-                <a href="{% url 'contact' %}"
-                   class="text-decoration-none text-dark">
-                    <i class="fa-solid fa-envelope fa-2x text-secondary"></i>
-                    <div class="small mt-2">Contact</div>
-                </a>
-            </div>
-
-        </div>
-
-    </div>
-
-</li>
-
 <!-- Theme Settings -->
 
 <li class="nav-item me-3">

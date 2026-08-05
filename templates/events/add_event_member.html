@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-<p>Total Users: {{ form.user.field.queryset.count }}</p>
+
 {% load crispy_forms_tags %}
 
 {% block title %}
@@ -9,6 +9,8 @@ Add Event Member
 {% block content %}
 
 <div class="container-fluid mt-4">
+
+    <!-- Page Header -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -28,8 +30,11 @@ Add Event Member
 
         </div>
 
-        <a href="{% url 'event_member_list' %}"
-           class="btn btn-success">
+        <a
+            href="{% url 'event_member_list' %}"
+            class="btn btn-success">
+
+            <i class="fa-solid fa-users"></i>
 
             Member List
 
@@ -37,23 +42,33 @@ Add Event Member
 
     </div>
 
+    <!-- Success Messages -->
+
     {% if messages %}
+
         {% for message in messages %}
+
             <div class="alert alert-success alert-dismissible fade show">
 
                 {{ message }}
 
-                <button class="btn-close"
-                        data-bs-dismiss="alert">
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
                 </button>
 
             </div>
+
         {% endfor %}
+
     {% endif %}
 
-    <div class="card shadow">
+    <!-- Card -->
 
-        <div class="card-header">
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-white">
 
             <h5 class="mb-0">
                 Add Event Member
@@ -69,7 +84,11 @@ Add Event Member
 
                 {{ form|crispy }}
 
-                <button class="btn btn-success mt-3">
+                <button
+                    type="submit"
+                    class="btn btn-success mt-3">
+
+                    <i class="fa-solid fa-floppy-disk me-1"></i>
 
                     Save Member
 
@@ -82,5 +101,37 @@ Add Event Member
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+$(document).ready(function () {
+
+    $("#user-select").select2({
+
+        placeholder: "🔍 Search Member",
+
+        allowClear: true,
+
+        width: "100%"
+
+    });
+
+    $("#event-select").select2({
+
+        placeholder: "🎉 Search Event",
+
+        allowClear: true,
+
+        width: "100%"
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

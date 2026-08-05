@@ -354,10 +354,6 @@ def delete_category(request, id):
 # CREATE EVENT
 # ===========================
 
-# ===========================
-# CREATE EVENT
-# ===========================
-
 @login_required
 def create_event(request):
 

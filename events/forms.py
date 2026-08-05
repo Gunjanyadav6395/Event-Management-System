@@ -138,12 +138,14 @@ class EventMemberForm(forms.ModelForm):
         widgets = {
 
             "user": forms.Select(attrs={
-                "class": "form-select"
-            }),
+    "class": "form-select",
+    "id": "user-select",
+}),
 
-            "event": forms.Select(attrs={
-                "class": "form-select"
-            }),
+"event": forms.Select(attrs={
+    "class": "form-select",
+    "id": "event-select",
+}),
 
             "status": forms.CheckboxInput(attrs={
                 "class": "form-check-input"

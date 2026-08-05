@@ -9,7 +9,6 @@ Event Category List
 <div class="container-fluid mt-4">
 
     <!-- Page Header -->
-
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
@@ -38,36 +37,31 @@ Event Category List
 
     </div>
 
-
-
-    <!-- Success Message -->
-
+    <!-- Success Messages -->
     {% if messages %}
 
         {% for message in messages %}
 
-        <div class="alert alert-success alert-dismissible fade show">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
 
-            {{ message }}
+                {{ message }}
 
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert">
-            </button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
 
-        </div>
+            </div>
 
         {% endfor %}
 
     {% endif %}
 
-
-
     <!-- Card -->
-
     <div class="card shadow-sm">
 
+        <!-- Card Header -->
         <div class="card-header bg-white">
 
             <div class="row align-items-center">
@@ -119,8 +113,7 @@ Event Category List
 
         </div>
 
-
-
+        <!-- Table -->
         <div class="card-body p-0">
 
             <table class="table table-bordered table-hover align-middle mb-0">
@@ -149,106 +142,109 @@ Event Category List
 
                 <tbody>
 
-                {% for category in categories %}
+                    {% for category in categories %}
 
-                    <tr>
+                        <tr>
 
-                        <td>
-                            {{ category.id }}
-                        </td>
+                            <td>
 
-                        <td>
-                            {{ category.category_name }}
-                        </td>
+                                {{ category.id }}
 
-                        <td>
-                            {{ category.code }}
-                        </td>
+                            </td>
 
-                        <td>
+                            <td>
 
-                            {% if category.image %}
+                                {{ category.category_name }}
 
-                                <img
-                                    src="{{ category.image.url }}"
-                                    width="70"
-                                    height="55"
-                                    class="rounded border">
+                            </td>
 
-                            {% else %}
+                            <td>
 
-                                <span class="text-muted">
-                                    No Image
+                                {{ category.code }}
+
+                            </td>
+
+                            <td>
+
+                                {% if category.image %}
+
+                                    <img
+                                        src="{{ category.image.url }}"
+                                        width="70"
+                                        height="55"
+                                        class="rounded border">
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        No Image
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {{ category.priority }}
+
+                            </td>
+
+                            <!-- Fixed Status -->
+                            <td>
+
+                                <span class="badge {% if category.status == 'Active' %}bg-success{% else %}bg-danger{% endif %}">
+
+                                    {{ category.status }}
+
                                 </span>
 
-                            {% endif %}
+                            </td>
 
-                        </td>
+                            <td>
 
-                        <td>
+                                <div class="btn-group" role="group">
 
-                            {{ category.priority }}
+                                    <a
+                                        href="{% url 'edit_category' category.id %}"
+                                        class="btn btn-primary btn-sm">
 
-                        </td>
+                                        <i class="fa-solid fa-pen"></i>
 
-                        <td>
+                                        Edit
 
-                            {% if category.status %}
+                                    </a>
 
-                                <span class="badge bg-success">
-                                    Active
-                                </span>
+                                    <a
+                                        href="{% url 'delete_category' category.id %}"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this category?')">
 
-                            {% else %}
+                                        <i class="fa-solid fa-trash"></i>
 
-                                <span class="badge bg-danger">
-                                    Inactive
-                                </span>
+                                        Delete
 
-                            {% endif %}
+                                    </a>
 
-                        </td>
+                                </div>
 
-                        <td>
+                            </td>
 
-    <div class="btn-group" role="group">
+                        </tr>
 
-        <a href="{% url 'edit_category' category.id %}"
-           class="btn btn-primary btn-sm">
+                    {% empty %}
 
-            <i class="fa-solid fa-pen"></i>
-            Edit
+                        <tr>
 
-        </a>
+                            <td colspan="7" class="text-center py-4">
 
-        <a href="{% url 'delete_category' category.id %}"
-           class="btn btn-danger btn-sm"
-           onclick="return confirm('Are you sure you want to delete this category?')">
+                                No Event Categories Found
 
-            <i class="fa-solid fa-trash"></i>
-            Delete
+                            </td>
 
-        </a>
+                        </tr>
 
-    </div>
-
-</td>
-
-                    </tr>
-
-                {% empty %}
-
-                    <tr>
-
-                        <td colspan="7" class="text-center py-4">
-
-                            No Event Categories Found
-
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
+                    {% endfor %}
 
                 </tbody>
 

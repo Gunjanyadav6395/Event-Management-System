@@ -208,3 +208,70 @@ if (darkMode) {
     });
 
 }
+// ==========================
+// Dashboard Chart
+// ==========================
+
+const chartCanvas = document.getElementById("eventChart");
+
+if (chartCanvas) {
+
+    new Chart(chartCanvas, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul"
+
+            ],
+
+            datasets: [{
+
+                label: "Events",
+
+                data: [4, 8, 6, 10, 7, 12, 9],
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+}

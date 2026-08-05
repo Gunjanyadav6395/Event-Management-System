@@ -9,22 +9,21 @@ Dashboard
 <div class="container-fluid mt-4">
 
     <!-- Header -->
+    <div class="card shadow border-0 rounded-4 mb-4">
 
-    <div class="card shadow-sm border-0 mb-4">
-
-        <div class="card-body">
+        <div class="card-body py-4">
 
             <div class="d-flex justify-content-between align-items-center">
 
                 <div>
 
-                    <h3 class="fw-bold text-primary mb-1">
-                        <i class="fa-solid fa-gauge-high"></i>
+                    <h3 class="fw-bold text-primary mb-2">
+                        <i class="fa-solid fa-gauge-high me-2"></i>
                         Event Management Dashboard
                     </h3>
 
                     <p class="text-muted mb-0">
-                        Welcome,
+                        Welcome back,
                         <strong>{{ request.user.username }}</strong>
                     </p>
 
@@ -36,17 +35,17 @@ Dashboard
 
     </div>
 
-    <!-- Dashboard Cards -->
+    <!-- Statistics Cards -->
 
-    <div class="row">
+    <div class="row g-4 mb-4">
 
         <!-- Category -->
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6">
 
-            <div class="card bg-primary text-white shadow border-0 h-100">
+            <div class="card bg-primary text-white shadow border-0 h-100 rounded-4">
 
-                <div class="card-body text-center">
+                <div class="card-body text-center py-4">
 
                     <i class="fa-solid fa-layer-group fa-3x mb-3"></i>
 
@@ -61,8 +60,6 @@ Dashboard
                     <a href="{% url 'category_list' %}"
                        class="btn btn-light btn-sm">
 
-                        <i class="fa-solid fa-arrow-right"></i>
-
                         More Info
 
                     </a>
@@ -75,17 +72,17 @@ Dashboard
 
         <!-- Events -->
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6">
 
-            <div class="card bg-success text-white shadow border-0 h-100">
+            <div class="card bg-success text-white shadow border-0 h-100 rounded-4">
 
-                <div class="card-body text-center">
+                <div class="card-body text-center py-4">
 
                     <i class="fa-solid fa-calendar-days fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-    {{ total_events }}
-</h2>
+                        {{ total_events }}
+                    </h2>
 
                     <h5 class="mb-3">
                         Total Events
@@ -93,8 +90,6 @@ Dashboard
 
                     <a href="{% url 'event_list' %}"
                        class="btn btn-light btn-sm">
-
-                        <i class="fa-solid fa-arrow-right"></i>
 
                         More Info
 
@@ -108,17 +103,17 @@ Dashboard
 
         <!-- Users -->
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6">
 
-            <div class="card bg-warning text-dark shadow border-0 h-100">
+            <div class="card bg-warning text-dark shadow border-0 h-100 rounded-4">
 
-                <div class="card-body text-center">
+                <div class="card-body text-center py-4">
 
                     <i class="fa-solid fa-users fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-    {{ total_users }}
-</h2>
+                        {{ total_users }}
+                    </h2>
 
                     <h5 class="mb-3">
                         Users
@@ -126,8 +121,6 @@ Dashboard
 
                     <a href="#"
                        class="btn btn-dark btn-sm">
-
-                        <i class="fa-solid fa-arrow-right"></i>
 
                         More Info
 
@@ -141,17 +134,17 @@ Dashboard
 
         <!-- Completed -->
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6">
 
-            <div class="card bg-danger text-white shadow border-0 h-100">
+            <div class="card bg-danger text-white shadow border-0 h-100 rounded-4">
 
-                <div class="card-body text-center">
+                <div class="card-body text-center py-4">
 
                     <i class="fa-solid fa-circle-check fa-3x mb-3"></i>
 
                     <h2 class="fw-bold">
-    {{ completed_events }}
-</h2>
+                        {{ completed_events }}
+                    </h2>
 
                     <h5 class="mb-3">
                         Completed Events
@@ -159,8 +152,6 @@ Dashboard
 
                     <a href="{% url 'event_list' %}"
                        class="btn btn-light btn-sm">
-
-                        <i class="fa-solid fa-arrow-right"></i>
 
                         More Info
 
@@ -170,31 +161,168 @@ Dashboard
 
             </div>
 
+        </div><!-- Monthly Analytics -->
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-info text-white">
+
+        <h5 class="mb-0">
+
+            <i class="fa-solid fa-chart-column me-2"></i>
+
+            Monthly Events Analytics
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="eventChart" height="80"></canvas>
+
+    </div>
+
+</div>
+
+<!-- Quick Actions -->
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-primary text-white">
+
+        <h5 class="mb-0">
+
+            <i class="fa-solid fa-bolt me-2"></i>
+
+            Quick Actions
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <!-- Create Event -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'create_event' %}"
+                   class="btn btn-outline-primary quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-calendar-plus fs-2 mb-2"></i>
+
+                    <span>Create Event</span>
+
+                </a>
+
+            </div>
+
+            <!-- Add Category -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'create_event_category' %}"
+                   class="btn btn-outline-success quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-folder-plus fs-2 mb-2"></i>
+
+                    <span>Add Category</span>
+
+                </a>
+
+            </div>
+
+            <!-- Add Member -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'create_event_member' %}"
+                   class="btn btn-outline-warning quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-user-plus fs-2 mb-2"></i>
+
+                    <span>Add Member</span>
+
+                </a>
+
+            </div>
+
+            <!-- Event List -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'event_list' %}"
+                   class="btn btn-outline-info quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-list fs-2 mb-2"></i>
+
+                    <span>All Events</span>
+
+                </a>
+
+            </div>
+
+            <!-- Categories -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'category_list' %}"
+                   class="btn btn-outline-secondary quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-layer-group fs-2 mb-2"></i>
+
+                    <span>Categories</span>
+
+                </a>
+
+            </div>
+
+            <!-- Contact -->
+
+            <div class="col-lg-2 col-md-4 col-6">
+
+                <a href="{% url 'contact' %}"
+                   class="btn btn-outline-danger quick-action-btn w-100 d-flex flex-column justify-content-center align-items-center">
+
+                    <i class="fa-solid fa-envelope fs-2 mb-2"></i>
+
+                    <span>Contact</span>
+
+                </a>
+
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Recent Events -->
+</div>
+<!-- Recent Events -->
 
-    <div class="card shadow-sm border-0">
+<div class="card shadow border-0 rounded-4 mb-4">
 
-        <div class="card-header bg-dark text-white">
+    <div class="card-header bg-dark text-white">
 
-            <h5 class="mb-0">
+        <h5 class="mb-0">
 
-                <i class="fa-solid fa-table"></i>
+            <i class="fa-solid fa-table me-2"></i>
 
-                Recent Events
+            Recent Events
 
-            </h5>
+        </h5>
 
-        </div>
+    </div>
 
-        <div class="card-body">
+    <div class="card-body">
+
+        <div class="table-responsive">
 
             <table class="table table-hover align-middle">
 
-                <thead>
+                <thead class="table-light">
 
                     <tr>
 
@@ -202,7 +330,7 @@ Dashboard
                         <th>Event Name</th>
                         <th>Category</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
 
                     </tr>
 
@@ -210,63 +338,70 @@ Dashboard
 
                 <tbody>
 
-    {% for event in recent_events %}
+                    {% for event in recent_events %}
 
-    <tr>
+                    <tr>
 
-        <td>{{ event.id }}</td>
+                        <td>{{ event.id }}</td>
 
-        <td>{{ event.event_name }}</td>
+                        <td>{{ event.event_name }}</td>
 
-        <td>{{ event.category.category_name }}</td>
+                        <td>{{ event.category.category_name }}</td>
 
-        <td>
+                        <td>
 
-            {% if event.status %}
+                            {% if event.status %}
 
-                <span class="badge bg-success">
-                    Active
-                </span>
+                                <span class="badge bg-success">
 
-            {% else %}
+                                    Active
 
-                <span class="badge bg-danger">
-                    Inactive
-                </span>
+                                </span>
 
-            {% endif %}
+                            {% else %}
 
-        </td>
+                                <span class="badge bg-danger">
 
-        <td>
+                                    Inactive
 
-            <a href="{% url 'edit_event' event.id %}"
-               class="btn btn-warning btn-sm">
+                                </span>
 
-                <i class="fa-solid fa-pen"></i>
+                            {% endif %}
 
-            </a>
+                        </td>
 
-        </td>
+                        <td class="text-center">
 
-    </tr>
+                            <a href="{% url 'edit_event' event.id %}"
+                               class="btn btn-warning btn-sm">
 
-    {% empty %}
+                                <i class="fa-solid fa-pen"></i>
 
-    <tr>
+                            </a>
 
-        <td colspan="5"
-            class="text-center text-muted py-4">
+                        </td>
 
-            No Recent Events Available
+                    </tr>
 
-        </td>
+                    {% empty %}
 
-    </tr>
+                    <tr>
 
-    {% endfor %}
+                        <td colspan="5"
+                            class="text-center text-muted py-5">
 
-</tbody>
+                            <i class="fa-solid fa-calendar-xmark fa-2x mb-3 d-block"></i>
+
+                            No Recent Events Available
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
             </table>
 
         </div>
@@ -275,4 +410,82 @@ Dashboard
 
 </div>
 
+</div>
+
 {% endblock %}
+
+{% block js %}
+
+<script>
+
+const ctx = document.getElementById("eventChart");
+
+if(ctx){
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+
+labels:["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+
+datasets:[{
+
+label:"Events",
+
+data:[4,7,5,8,11,9,13],
+
+backgroundColor:[
+"#0d6efd",
+"#198754",
+"#ffc107",
+"#dc3545",
+"#0dcaf0",
+"#6f42c1",
+"#fd7e14"
+],
+
+borderRadius:10
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true
+
+}
+
+}
+
+}
+
+});
+
+}
+
+</script>
+
+{% endblock %}
+
+    </div>
