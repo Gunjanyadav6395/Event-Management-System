@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
 from .models import (
     EventCategory,
     Event,
@@ -8,9 +9,8 @@ from .models import (
     EventWish,
     EventWishUser,
     Contact,
+    BudgetFinance,
 )
-
-
 # ==========================
 # Event Category Form
 # ==========================
@@ -437,3 +437,72 @@ class UserPasswordChangeForm(PasswordChangeForm):
         )
 
     )
+
+# ==========================
+# Budget & Finance Form
+# ==========================
+
+class BudgetFinanceForm(forms.ModelForm):
+
+    class Meta:
+
+        model = BudgetFinance
+
+        fields = [
+            "event",
+            "budget",
+            "projected_expense",
+            "actual_expense",
+            "sponsorship_revenue",
+            "notes",
+        ]
+
+        widgets = {
+
+            "event": forms.Select(attrs={
+                "class": "form-select"
+            }),
+
+            "budget": forms.NumberInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter Total Budget",
+                "step": "0.01"
+            }),
+
+            "projected_expense": forms.NumberInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter Projected Expense",
+                "step": "0.01"
+            }),
+
+            "actual_expense": forms.NumberInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter Actual Expense",
+                "step": "0.01"
+            }),
+
+            "sponsorship_revenue": forms.NumberInput(attrs={
+                "class": "form-control",
+                "placeholder": "Enter Sponsorship Revenue",
+                "step": "0.01"
+            }),
+
+            "notes": forms.Textarea(attrs={
+                "class": "form-control",
+                "rows": 4,
+                "placeholder": "Enter financial notes..."
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        self.fields["event"].empty_label = "Select Event"
+        self.fields["event"].label = "Event"
+
+        self.fields["budget"].label = "Total Budget"
+        self.fields["projected_expense"].label = "Projected Expense"
+        self.fields["actual_expense"].label = "Actual Expense"
+        self.fields["sponsorship_revenue"].label = "Sponsorship Revenue"
+        self.fields["notes"].label = "Notes"

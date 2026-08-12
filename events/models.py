@@ -156,3 +156,50 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.full_name
+# ---------------- BUDGET & FINANCE ----------------
+
+class BudgetFinance(models.Model):
+
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE
+    )
+
+    budget = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    projected_expense = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    actual_expense = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    sponsorship_revenue = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+
+    notes = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.event.event_name

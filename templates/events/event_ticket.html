@@ -1,0 +1,382 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Ticket Main Card -->
+    <div class="card shadow-sm border-0">
+
+        <!-- Ticket Header -->
+        <div class="card-header bg-primary text-white py-3">
+
+            <div class="d-flex align-items-center">
+
+                <i class="fas fa-ticket-alt fa-2x me-3"></i>
+
+                <div>
+                    <h2 class="fw-bold mb-0">
+                        Event Ticket
+                    </h2>
+
+                    <small>
+                        Digital Event Registration Ticket
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Ticket Body -->
+        <div class="card-body p-4">
+
+            <!-- Ticket Number -->
+            <div class="text-center mb-4">
+
+                <p class="text-muted fs-5 mb-1">
+                    Ticket Number
+                </p>
+
+                <h1 class="fw-bold text-primary">
+                    {{ ticket_number }}
+                </h1>
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- Event Information + QR -->
+            <div class="row g-4 mt-2">
+
+                <!-- LEFT SIDE -->
+                <div class="col-lg-8">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered align-middle mb-0">
+
+                            <tbody>
+
+                                <!-- Event Name -->
+                                <tr>
+                                    <th style="width: 35%;">
+                                        Event Name
+                                    </th>
+
+                                    <td class="fw-bold fs-5">
+                                        {{ event.event_name }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Category -->
+                                <tr>
+                                    <th>
+                                        Category
+                                    </th>
+
+                                    <td>
+                                        {{ event.category.category_name }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Participant -->
+                                <tr>
+                                    <th>
+                                        Participant
+                                    </th>
+
+                                    <td>
+                                        {{ member.user.get_full_name|default:member.user.username }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Email -->
+                                <tr>
+                                    <th>
+                                        Email
+                                    </th>
+
+                                    <td>
+                                        {{ member.user.email }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Event Date -->
+                                <tr>
+                                    <th>
+                                        Event Date
+                                    </th>
+
+                                    <td>
+
+                                        {% if event.event_date %}
+                                            {{ event.event_date|date:"F d, Y" }}
+                                        {% else %}
+                                            Not specified
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+
+
+                                <!-- Venue -->
+                                <tr>
+                                    <th>
+                                        Venue
+                                    </th>
+
+                                    <td>
+                                        {{ event.venue|default:"Not specified" }}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Generated On -->
+                                <tr>
+                                    <th>
+                                        Generated On
+                                    </th>
+
+                                    <td>
+                                        {% now "M d, Y, g:i A" %}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Status -->
+                                <tr>
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <td>
+
+                                        <span class="badge bg-success px-3 py-2">
+                                            Registered
+                                        </span>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT SIDE -->
+                <div class="col-lg-4">
+
+                    <div class="text-center">
+
+                        <!-- Event Image -->
+                        {% if event.image %}
+
+                            <img
+                                src="{{ event.image.url }}"
+                                alt="{{ event.event_name }}"
+                                class="img-fluid rounded shadow-sm mb-3"
+                                style="
+                                    width: 100%;
+                                    max-height: 180px;
+                                    object-fit: cover;
+                                "
+                            >
+
+                        {% else %}
+
+                            <div
+                                class="bg-light rounded shadow-sm d-flex align-items-center justify-content-center mb-3"
+                                style="
+                                    width: 100%;
+                                    height: 180px;
+                                "
+                            >
+
+                                <i class="fas fa-calendar-alt fa-4x text-primary"></i>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- QR Code -->
+                        <h5 class="fw-bold mb-2">
+                            QR Code
+                        </h5>
+
+                        <div
+                            id="qrcode"
+                            class="d-flex justify-content-center mb-2"
+                        ></div>
+
+                        <small class="text-muted">
+                            Scan this code at event entry
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4">
+
+
+            <!-- Important Message -->
+            <div class="alert alert-info mb-4">
+
+                <strong>
+                    Important:
+                </strong>
+
+                Please present this ticket at the event entrance.
+                The QR Code will be verified before allowing access.
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <!-- Back -->
+                <button
+                    type="button"
+                    onclick="history.back()"
+                    class="btn btn-secondary px-4"
+                >
+
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to My Events
+
+                </button>
+
+
+                <!-- Print -->
+                <button
+                    type="button"
+                    onclick="window.print()"
+                    class="btn btn-primary px-4"
+                >
+
+                    <i class="fas fa-print me-2"></i>
+                    Print Ticket
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- QR CODE LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        new QRCode(document.getElementById("qrcode"), {
+
+            text: "{{ ticket_number }}",
+
+            width: 150,
+
+            height: 150,
+
+            colorDark: "#000000",
+
+            colorLight: "#ffffff",
+
+            correctLevel: QRCode.CorrectLevel.H
+
+        });
+
+    });
+
+</script>
+
+
+<!-- PRINT CSS -->
+<style>
+
+    @media print {
+
+        body {
+            background: white !important;
+        }
+
+        .sidebar,
+        .navbar,
+        header,
+        footer {
+            display: none !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .btn {
+            display: none !important;
+        }
+
+        .alert {
+            border: 1px solid #bee5eb !important;
+        }
+
+    }
+
+
+    #qrcode {
+
+        background: white;
+
+        padding: 10px;
+
+        display: inline-flex;
+
+        border-radius: 8px;
+
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+    }
+
+
+    .table th {
+
+        font-weight: 700;
+
+        background-color: #f8f9fa;
+
+    }
+
+
+    .table td,
+    .table th {
+
+        padding: 12px;
+
+    }
+
+</style>
+
+{% endblock %}

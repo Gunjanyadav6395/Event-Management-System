@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Event Finance</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .page-header {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .finance-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .finance-card h4 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .btn-save {
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+
+        .table-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .table th {
+            background: #f1f3f6;
+            font-weight: 600;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .amount {
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container-fluid py-4">
+
+    <!-- ===========================
+         PAGE HEADER
+    ============================ -->
+
+    <div class="page-header">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+                    Manage Event Finance
+                </h2>
+
+                <p class="text-muted mb-0 mt-2">
+                    Manage event budgets, expenses and sponsorship revenue.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'admin_dashboard' %}"
+                class="btn btn-secondary"
+            >
+                <i class="fa-solid fa-arrow-left me-1"></i>
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===========================
+         SUCCESS / ERROR MESSAGES
+    ============================ -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div
+                class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+                role="alert"
+            >
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                ></button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- ===========================
+         ADD FINANCE
+    ============================ -->
+
+    <div class="finance-card">
+
+        <h4>
+            <i class="fa-solid fa-plus-circle me-2"></i>
+            Add Event Finance
+        </h4>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+                <!-- Event -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Event
+                    </label>
+
+                    {{ form.event }}
+
+                    {% if form.event.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.event.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Budget -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Budget
+                    </label>
+
+                    {{ form.budget }}
+
+                    {% if form.budget.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.budget.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Projected Expense -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Projected Expense
+                    </label>
+
+                    {{ form.projected_expense }}
+
+                    {% if form.projected_expense.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.projected_expense.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Actual Expense -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Actual Expense
+                    </label>
+
+                    {{ form.actual_expense }}
+
+                    {% if form.actual_expense.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.actual_expense.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Sponsorship Revenue -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Sponsorship Revenue
+                    </label>
+
+                    {{ form.sponsorship_revenue }}
+
+                    {% if form.sponsorship_revenue.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.sponsorship_revenue.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Notes -->
+
+                <div class="col-md-6 mb-3">
+
+                    <label class="form-label">
+                        Notes
+                    </label>
+
+                    {{ form.notes }}
+
+                    {% if form.notes.errors %}
+
+                        <div class="text-danger small mt-1">
+                            {{ form.notes.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary btn-save"
+            >
+
+                <i class="fa-solid fa-floppy-disk me-1"></i>
+
+                Save Finance Details
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ===========================
+         FINANCE RECORDS
+    ============================ -->
+
+    <div class="table-card">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h4 class="mb-0">
+
+                <i class="fa-solid fa-chart-line me-2"></i>
+
+                Financial Records
+
+            </h4>
+
+            <span class="badge bg-primary">
+
+                {{ finances|length }} Records
+
+            </span>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Event</th>
+
+                        <th>Budget</th>
+
+                        <th>Projected Expense</th>
+
+                        <th>Actual Expense</th>
+
+                        <th>Sponsorship Revenue</th>
+
+                        <th>Notes</th>
+
+                        <th>Created</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for finance in finances %}
+
+                    <tr>
+
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                {{ finance.event }}
+                            </strong>
+
+                        </td>
+
+                        <td class="amount">
+
+                            ₹{{ finance.budget|default:"0" }}
+
+                        </td>
+
+                        <td class="amount">
+
+                            ₹{{ finance.projected_expense|default:"0" }}
+
+                        </td>
+
+                        <td class="amount">
+
+                            ₹{{ finance.actual_expense|default:"0" }}
+
+                        </td>
+
+                        <td class="amount">
+
+                            ₹{{ finance.sponsorship_revenue|default:"0" }}
+
+                        </td>
+
+                        <td>
+
+                            {{ finance.notes|default:"—" }}
+
+                        </td>
+
+                        <td>
+
+                            {{ finance.created_at|date:"d M Y" }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="empty-message"
+                        >
+
+                            <i
+                                class="fa-solid fa-file-invoice-dollar fa-2x mb-2"
+                            ></i>
+
+                            <br>
+
+                            No financial records found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

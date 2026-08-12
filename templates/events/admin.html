@@ -6,101 +6,433 @@ Admin Dashboard
 
 {% block content %}
 
-<div class="container-fluid mt-4">
+<div class="container-fluid py-4">
 
-    <!-- Page Header -->
+    <!-- ===========================
+         PAGE HEADER
+    ============================ -->
 
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+                    <h3 class="fw-bold mb-1">
+                        Admin Dashboard
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Manage events, participants and event activities.
+                    </p>
+
+                    <small class="text-muted">
+                        <a href="{% url 'dashboard' %}"
+                           class="text-decoration-none">
+                            Home
+                        </a>
+                        /
+                        Admin Dashboard
+                    </small>
+                </div>
+
+                <div>
+
+                    <a href="{% url 'manage_event_finance' %}"
+                       class="btn btn-success">
+
+                        <i class="bi bi-cash-stack"></i>
+                        Manage Event Finance
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===========================
+         STATISTICS
+    ============================ -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- Categories -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted mb-2">
+                                Total Categories
+                            </h6>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ total_categories }}
+                            </h2>
+
+                        </div>
+
+                        <div class="bg-primary bg-opacity-10
+                                    text-primary rounded-circle
+                                    p-3">
+
+                            <i class="bi bi-grid fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'category_list' %}"
+                       class="btn btn-sm btn-outline-primary mt-3">
+
+                        View Categories
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Events -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted mb-2">
+                                Total Events
+                            </h6>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ total_events }}
+                            </h2>
+
+                        </div>
+
+                        <div class="bg-success bg-opacity-10
+                                    text-success rounded-circle
+                                    p-3">
+
+                            <i class="bi bi-calendar-event fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'event_list' %}"
+                       class="btn btn-sm btn-outline-success mt-3">
+
+                        View Events
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Participants -->
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h6 class="text-muted mb-2">
+                                Participants
+                            </h6>
+
+                            <h2 class="fw-bold mb-0">
+                                {{ participants|length }}
+                            </h2>
+
+                        </div>
+
+                        <div class="bg-warning bg-opacity-10
+                                    text-warning rounded-circle
+                                    p-3">
+
+                            <i class="bi bi-people fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'event_member_list' %}"
+                       class="btn btn-sm btn-outline-warning mt-3">
+
+                        View Participants
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===========================
+         QUICK ACTIONS
+    ============================ -->
+
+    <div class="card shadow-sm border-0 mb-4">
 
         <div class="card-header bg-white">
 
-            <h3 class="mb-1">
-                Admin Dashboard
-            </h3>
-
-            <small class="text-muted">
-                <a href="{% url 'dashboard' %}" class="text-decoration-none">
-                    Home
-                </a>
-                /
-                Admin Dashboard
-            </small>
+            <h5 class="fw-bold mb-0">
+                Quick Actions
+            </h5>
 
         </div>
 
         <div class="card-body">
 
-            <h4 class="mb-4">
-                Event Participants
-            </h4>
+            <div class="row g-3">
+
+                <div class="col-md-3">
+
+                    <a href="{% url 'create_event' %}"
+                       class="btn btn-primary w-100 py-3">
+
+                        <i class="bi bi-plus-circle"></i>
+                        Create Event
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <a href="{% url 'create_event_category' %}"
+                       class="btn btn-outline-primary w-100 py-3">
+
+                        <i class="bi bi-folder-plus"></i>
+                        Create Category
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <a href="{% url 'create_event_member' %}"
+                       class="btn btn-outline-success w-100 py-3">
+
+                        <i class="bi bi-person-plus"></i>
+                        Add Participant
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <a href="{% url 'manage_event_finance' %}"
+                       class="btn btn-outline-success w-100 py-3">
+
+                        <i class="bi bi-currency-rupee"></i>
+                        Event Finance
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===========================
+         EVENT PARTICIPANTS
+    ============================ -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h4 class="fw-bold mb-1">
+                        Event Participants
+                    </h4>
+
+                    <small class="text-muted">
+                        Registered participants and their event status.
+                    </small>
+
+                </div>
+
+                <a href="{% url 'event_member_list' %}"
+                   class="btn btn-sm btn-outline-primary">
+
+                    View All
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
 
             <div class="table-responsive">
 
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-bordered table-hover
+                              align-middle mb-0">
 
                     <thead class="table-light">
 
                         <tr>
 
-                            <th width="80">ID</th>
+                            <th width="80">
+                                ID
+                            </th>
 
-                            <th>User</th>
+                            <th>
+                                User
+                            </th>
 
-                            <th>Event</th>
+                            <th>
+                                Event
+                            </th>
 
-                            <th width="150">Status</th>
+                            <th width="150">
+                                Status
+                            </th>
 
                         </tr>
 
                     </thead>
 
-                   <tbody>
 
-    {% for participant in participants %}
+                    <tbody>
 
-    <tr>
+                        {% for participant in participants %}
 
-        <td>{{ participant.id }}</td>
+                        <tr>
 
-        <td>{{ participant.user.username }}</td>
+                            <td>
+                                {{ participant.id }}
+                            </td>
 
-        <td>{{ participant.event.event_name }}</td>
+                            <td>
 
-        <td>
+                                <div class="fw-semibold">
+                                    {{ participant.user.username }}
+                                </div>
 
-            {% if participant.status %}
+                                {% if participant.user.email %}
 
-                <span class="badge bg-success">
-                    Active
-                </span>
+                                <small class="text-muted">
+                                    {{ participant.user.email }}
+                                </small>
 
-            {% else %}
+                                {% endif %}
 
-                <span class="badge bg-danger">
-                    Inactive
-                </span>
+                            </td>
 
-            {% endif %}
 
-        </td>
+                            <td>
 
-    </tr>
+                                <a href="{% url 'event_detail' participant.event.id %}"
+                                   class="text-decoration-none fw-semibold">
 
-    {% empty %}
+                                    {{ participant.event.event_name }}
 
-    <tr>
+                                </a>
 
-        <td colspan="4" class="text-center py-5">
+                            </td>
 
-            No Data Available
 
-        </td>
+                            <td>
 
-    </tr>
+                                {% if participant.status %}
 
-    {% endfor %}
+                                    <span class="badge bg-success px-3 py-2">
 
-</tbody>
+                                        Active
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger px-3 py-2">
+
+                                        Inactive
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4"
+                                class="text-center py-5">
+
+                                <div class="text-muted">
+
+                                    <i class="bi bi-people fs-1 d-block mb-3"></i>
+
+                                    <h5>
+                                        No Participants Found
+                                    </h5>
+
+                                    <p class="mb-0">
+                                        No event participants are available yet.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
 
                 </table>
 

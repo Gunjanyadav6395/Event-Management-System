@@ -1,0 +1,486 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+Financial Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+
+    <div class="card border-0 shadow-sm mb-4"
+         style="border-radius: 20px;">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h1 class="fw-bold mb-2" style="color:#172B4D;">
+                        Financial Reports
+                    </h1>
+
+                    <p class="text-muted mb-2 fs-5">
+                        View and analyze financial information for all events.
+                    </p>
+
+                    <div>
+
+                        <a href="{% url 'dashboard' %}"
+                           class="text-decoration-none">
+                            Home
+                        </a>
+
+                        <span class="text-muted"> / </span>
+
+                        <a href="{% url 'admin_dashboard' %}"
+                           class="text-decoration-none">
+                            Admin Dashboard
+                        </a>
+
+                        <span class="text-muted"> / </span>
+
+                        <span class="text-muted">
+                            Financial Reports
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <a href="{% url 'manage_event_finance' %}"
+                   class="btn btn-success px-4 py-2"
+                   style="border-radius:12px;">
+
+                    <i class="bi bi-wallet2 me-2"></i>
+                    Manage Event Finance
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SUMMARY CARDS
+    ========================== -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- TOTAL BUDGET -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100"
+                 style="border-radius:18px;">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <p class="text-muted mb-2">
+                                Total Budget
+                            </p>
+
+                            <h2 class="fw-bold text-primary mb-0">
+                                ₹{{ total_budget|default:0 }}
+                            </h2>
+
+                        </div>
+
+                        <div class="rounded-circle bg-primary-subtle p-3">
+
+                            <i class="bi bi-wallet2 fs-4 text-primary"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROJECTED EXPENSE -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100"
+                 style="border-radius:18px;">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <p class="text-muted mb-2">
+                                Projected Expense
+                            </p>
+
+                            <h2 class="fw-bold text-warning mb-0">
+                                ₹{{ total_projected_expense|default:0 }}
+                            </h2>
+
+                        </div>
+
+                        <div class="rounded-circle bg-warning-subtle p-3">
+
+                            <i class="bi bi-bar-chart fs-4 text-warning"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTUAL EXPENSE -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100"
+                 style="border-radius:18px;">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <p class="text-muted mb-2">
+                                Actual Expense
+                            </p>
+
+                            <h2 class="fw-bold text-danger mb-0">
+                                ₹{{ total_actual_expense|default:0 }}
+                            </h2>
+
+                        </div>
+
+                        <div class="rounded-circle bg-danger-subtle p-3">
+
+                            <i class="bi bi-cash-stack fs-4 text-danger"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SPONSORSHIP -->
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm h-100"
+                 style="border-radius:18px;">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start">
+
+                        <div>
+
+                            <p class="text-muted mb-2">
+                                Sponsorship Revenue
+                            </p>
+
+                            <h2 class="fw-bold text-success mb-0">
+                                ₹{{ total_sponsorship_revenue|default:0 }}
+                            </h2>
+
+                        </div>
+
+                        <div class="rounded-circle bg-success-subtle p-3">
+
+                            <i class="bi bi-graph-up-arrow fs-4 text-success"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FINANCIAL BALANCE
+    ========================== -->
+
+    <div class="card border-0 shadow-sm mb-4"
+         style="border-radius:20px;">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h4 class="fw-bold mb-1" style="color:#172B4D;">
+                        Financial Balance
+                    </h4>
+
+                    <p class="text-muted mb-0">
+                        Total budget + sponsorship revenue − actual expense
+                    </p>
+
+                </div>
+
+                <div class="text-end">
+
+                    {% if total_balance >= 0 %}
+
+                        <h2 class="fw-bold text-success mb-0">
+                            ₹{{ total_balance|default:0 }}
+                        </h2>
+
+                        <small class="text-success">
+                            Positive Balance
+                        </small>
+
+                    {% else %}
+
+                        <h2 class="fw-bold text-danger mb-0">
+                            ₹{{ total_balance|default:0 }}
+                        </h2>
+
+                        <small class="text-danger">
+                            Negative Balance
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FINANCIAL RECORDS
+    ========================== -->
+
+    <div class="card border-0 shadow-sm"
+         style="border-radius:20px;">
+
+        <div class="card-header bg-white p-4"
+             style="
+                border-radius:20px 20px 0 0;
+                border-bottom:1px solid #eeeeee;
+             ">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <div>
+
+                    <h3 class="fw-bold mb-1" style="color:#172B4D;">
+                        <i class="bi bi-bar-chart-line me-2"></i>
+                        Financial Records
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Complete financial details of all events.
+                    </p>
+
+                </div>
+
+                <span class="badge bg-primary fs-6 px-3 py-2">
+
+                    {{ finances|length }} Records
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th width="60">#</th>
+
+                            <th>Event</th>
+
+                            <th>Budget</th>
+
+                            <th>Projected Expense</th>
+
+                            <th>Actual Expense</th>
+
+                            <th>Sponsorship Revenue</th>
+
+                            <th>Notes</th>
+
+                            <th>Created</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for finance in finances %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ finance.event.event_name }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    ₹{{ finance.budget|default:0 }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                ₹{{ finance.projected_expense|default:0 }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="text-danger fw-semibold">
+                                    ₹{{ finance.actual_expense|default:0 }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="text-success fw-semibold">
+                                    ₹{{ finance.sponsorship_revenue|default:0 }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                {% if finance.notes %}
+
+                                    {{ finance.notes }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ finance.created_at|date:"d M Y" }}
+
+                            </td>
+
+                        </tr>
+
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8"
+                                class="text-center py-5">
+
+                                <div class="mb-3">
+
+                                    <i class="bi bi-file-earmark-bar-graph"
+                                       style="font-size:48px;color:#adb5bd;">
+                                    </i>
+
+                                </div>
+
+                                <h5 class="text-muted">
+                                    No Financial Records Found
+                                </h5>
+
+                                <p class="text-muted mb-3">
+                                    Add financial details for an event to see the report here.
+                                </p>
+
+                                <a href="{% url 'manage_event_finance' %}"
+                                   class="btn btn-success px-4">
+
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    Add Finance Details
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

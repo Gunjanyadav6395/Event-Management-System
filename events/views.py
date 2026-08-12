@@ -12,6 +12,7 @@ from .models import (
     EventMember,
     EventWish,
     EventWishUser,
+    BudgetFinance,
 )
 
 from .forms import (
@@ -24,6 +25,7 @@ from .forms import (
     UserRegisterForm,
     UserProfileForm,
     UserPasswordChangeForm,
+    BudgetFinanceForm,
 )
 
 def home(request):
@@ -804,7 +806,97 @@ def event_wish_user_list(request):
         }
 
     )
+# ===========================
+# MANAGE EVENT FINANCE
+# ===========================
 
+@login_required
+def manage_event_finance(request):
+
+    if request.method == "POST":
+
+        form = BudgetFinanceForm(
+            request.POST
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Event finance details saved successfully."
+            )
+
+            return redirect(
+                "manage_event_finance"
+            )
+
+    else:
+
+        form = BudgetFinanceForm()
+
+    finances = BudgetFinance.objects.select_related(
+        "event"
+    ).order_by(
+        "-created_at"
+    )
+
+    return render(
+        request,
+        "events/manage_event_finance.html",
+        {
+            "form": form,
+            "finances": finances,
+        }
+    )
+# ===========================
+# FINANCIAL REPORTS
+# ===========================
+
+@login_required
+def financial_reports(request):
+
+    finances = BudgetFinance.objects.select_related(
+        "event"
+    ).order_by(
+        "-created_at"
+    )
+
+    total_budget = sum(
+        finance.budget for finance in finances
+    )
+
+    total_projected_expense = sum(
+        finance.projected_expense for finance in finances
+    )
+
+    total_actual_expense = sum(
+        finance.actual_expense for finance in finances
+    )
+
+    total_sponsorship_revenue = sum(
+        finance.sponsorship_revenue for finance in finances
+    )
+
+    total_balance = (
+        total_budget
+        + total_sponsorship_revenue
+        - total_actual_expense
+    )
+
+    return render(
+        request,
+        "events/financial_reports.html",
+        {
+            "finances": finances,
+            "total_budget": total_budget,
+            "total_projected_expense": total_projected_expense,
+            "total_actual_expense": total_actual_expense,
+            "total_sponsorship_revenue": total_sponsorship_revenue,
+            "total_balance": total_balance,
+        }
+    )
 
 # ===========================
 # COMPLETE EVENT LIST
@@ -1342,4 +1434,34 @@ def change_password(request):
 
         }
 
+    )
+# ===========================
+# EVENT TICKET
+# ===========================
+
+@login_required
+def event_ticket(request, id):
+
+    member = get_object_or_404(
+        EventMember.objects.select_related(
+            "user",
+            "event",
+        ),
+        id=id,
+        user=request.user,
+        status=True,
+    )
+
+    event = member.event
+
+    ticket_number = f"EVT-{member.id:06d}"
+
+    return render(
+        request,
+        "events/event_ticket.html",
+        {
+            "member": member,
+            "event": event,
+            "ticket_number": ticket_number,
+        }
     )

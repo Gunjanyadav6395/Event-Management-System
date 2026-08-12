@@ -1,105 +1,218 @@
-{% extends 'base/user_base.html' %} {% load static %} {% block title %} My
-Registered Events {% endblock %} {% block content %}
+{% extends "base/base.html" %}
 
-<div class="container py-5">
-  <!-- Heading -->
+{% block content %}
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="fw-bold">
-        <i class="fa-solid fa-ticket text-primary me-2"></i>
+<div class="container-fluid py-4">
 
-        My Registered Events
-      </h2>
+    <!-- ========================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================= -->
 
-      <p class="text-muted mb-0">
-        All events you have successfully registered for.
-      </p>
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body d-flex justify-content-between align-items-center">
+
+            <div>
+                <h2 class="fw-bold mb-1">
+                    My Registered Events
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Events you have successfully registered for.
+                </p>
+            </div>
+
+            <span class="badge bg-primary fs-6 px-3 py-2">
+                {{ members|length }} Events
+            </span>
+
+        </div>
+
     </div>
 
-    <a href="{% url 'user_event_list' %}" class="btn btn-outline-primary">
-      <i class="fa-solid fa-calendar-plus me-2"></i>
 
-      Explore More Events
-    </a>
-  </div>
+    <!-- ========================= -->
+    <!-- REGISTERED EVENTS -->
+    <!-- ========================= -->
 
-  <div class="row">
-    {% for member in members %}
+    <div class="card shadow-sm border-0">
 
-    <div class="col-lg-4 col-md-6 mb-4">
-      <div class="card shadow border-0 rounded-4 h-100">
-        {% if member.event.image %}
+        <div class="card-header bg-white py-3">
 
-        <img
-          src="{{ member.event.image.url }}"
-          class="card-img-top"
-          style="height: 220px; object-fit: cover"
-        />
+            <h4 class="fw-bold mb-0">
+                Registered Events
+            </h4>
 
-        {% else %}
+        </div>
 
-        <img
-          src="{% static 'images/default-event.jpg' %}"
-          class="card-img-top"
-          style="height: 220px; object-fit: cover"
-        />
-
-        {% endif %}
 
         <div class="card-body">
-          <span class="badge bg-primary mb-2">
-            {{ member.event.category }}
-          </span>
 
-          <h5 class="fw-bold">{{ member.event.event_name }}</h5>
+            {% if members %}
 
-          <p class="mb-2 text-muted">
-            <i class="fa-solid fa-calendar-days text-success me-2"></i>
+                <div class="table-responsive">
 
-            {{ member.event.start_date|date:"d M Y" }}
-          </p>
+                    <table class="table table-bordered table-hover align-middle">
 
-          <p class="mb-2 text-muted">
-            <i class="fa-solid fa-location-dot text-danger me-2"></i>
+                        <thead class="table-light">
 
-            {{ member.event.venue }}
-          </p>
+                            <tr>
 
-          <span class="badge bg-success"> Registered </span>
+                                <th>#</th>
+
+                                <th>Event</th>
+
+                                <th>Category</th>
+
+                                <th>Event Date</th>
+
+                                <th>Venue</th>
+
+                                <th>Status</th>
+
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for member in members %}
+
+                            <tr>
+
+                                <!-- Number -->
+
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+
+
+                                <!-- Event -->
+
+                                <td>
+
+                                    <strong>
+                                        {{ member.event.event_name }}
+                                    </strong>
+
+                                </td>
+
+
+                                <!-- Category -->
+
+                                <td>
+
+                                    {{ member.event.category.category_name }}
+
+                                </td>
+
+
+                                <!-- Event Date -->
+
+                                <td>
+
+                                    {{ member.event.event_date|date:"d M Y" }}
+
+                                </td>
+
+
+                                <!-- Venue -->
+
+                                <td>
+
+                                    {{ member.event.venue }}
+
+                                </td>
+
+
+                                <!-- Status -->
+
+                                <td>
+
+                                    {% if member.status %}
+
+                                        <span class="badge bg-success">
+                                            Registered
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+                                            Cancelled
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Action -->
+
+                                <td>
+
+                                    <a
+                                        href="{% url 'event_ticket' member.id %}"
+                                        class="btn btn-primary btn-sm"
+                                    >
+
+                                        <i class="fas fa-ticket-alt"></i>
+
+                                        View Ticket
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            {% else %}
+
+                <!-- ========================= -->
+                <!-- NO EVENTS -->
+                <!-- ========================= -->
+
+                <div class="text-center py-5">
+
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+
+                    <h4>
+                        No Registered Events
+                    </h4>
+
+                    <p class="text-muted">
+                        You have not registered for any event yet.
+                    </p>
+
+
+                    <a
+                        href="{% url 'user_event_list' %}"
+                        class="btn btn-primary"
+                    >
+
+                        Browse Events
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
         </div>
 
-        <div class="card-footer bg-white border-0">
-          <a
-            href="{% url 'user_event_detail' member.event.id %}"
-            class="btn btn-primary w-100"
-          >
-            <i class="fa-solid fa-eye me-2"></i>
-
-            View Details
-          </a>
-        </div>
-      </div>
     </div>
 
-    {% empty %}
-
-    <div class="col-12">
-      <div class="text-center py-5">
-        <i class="fa-solid fa-calendar-xmark fa-4x text-secondary mb-3"></i>
-
-        <h4>No Registered Events</h4>
-
-        <p class="text-muted">You haven't registered for any event yet.</p>
-
-        <a href="{% url 'user_event_list' %}" class="btn btn-primary">
-          Browse Events
-        </a>
-      </div>
-    </div>
-
-    {% endfor %}
-  </div>
 </div>
 
 {% endblock %}

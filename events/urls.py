@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
+
 urlpatterns = [
 
     # =====================================
@@ -157,6 +158,16 @@ urlpatterns = [
     ),
 
     # =====================================
+    # BUDGET & FINANCE
+    # =====================================
+
+    path(
+        "manage-event-finance/",
+        views.manage_event_finance,
+        name="manage_event_finance"
+    ),
+
+    # =====================================
     # COMPLETE EVENTS
     # =====================================
 
@@ -177,7 +188,7 @@ urlpatterns = [
     ),
 
     # =====================================
-    # USERS (ADMIN)
+    # USERS - ADMIN
     # =====================================
 
     path(
@@ -230,53 +241,71 @@ urlpatterns = [
         name="my_registered_events"
     ),
     path(
-    "profile/",
-    views.user_profile,
-    name="user_profile"
-),
-path(
-    "edit-profile/",
-    views.edit_profile,
-    name="edit_profile"
-),
-path(
-    "change-password/",
-    views.change_password,
-    name="change_password"
-),
-# ==========================
-# FORGOT PASSWORD
-# ==========================
-
-path(
-    "password-reset/",
-    auth_views.PasswordResetView.as_view(
-        template_name="user/password_reset.html"
-    ),
-    name="password_reset",
+    "event-ticket/<int:id>/",
+    views.event_ticket,
+    name="event_ticket"
 ),
 
-path(
-    "password-reset/done/",
-    auth_views.PasswordResetDoneView.as_view(
-        template_name="user/password_reset_done.html"
-    ),
-    name="password_reset_done",
-),
+    # =====================================
+    # USER PROFILE
+    # =====================================
 
-path(
-    "reset/<uidb64>/<token>/",
-    auth_views.PasswordResetConfirmView.as_view(
-        template_name="user/password_reset_confirm.html"
+    path(
+        "profile/",
+        views.user_profile,
+        name="user_profile"
     ),
-    name="password_reset_confirm",
-),
 
-path(
-    "reset/done/",
-    auth_views.PasswordResetCompleteView.as_view(
-        template_name="user/password_reset_complete.html"
+    path(
+        "edit-profile/",
+        views.edit_profile,
+        name="edit_profile"
     ),
-    name="password_reset_complete",
+
+    path(
+        "change-password/",
+        views.change_password,
+        name="change_password"
+    ),
+
+    # =====================================
+    # FORGOT PASSWORD
+    # =====================================
+
+    path(
+        "password-reset/",
+        auth_views.PasswordResetView.as_view(
+            template_name="user/password_reset.html"
+        ),
+        name="password_reset",
+    ),
+
+    path(
+        "password-reset/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="user/password_reset_done.html"
+        ),
+        name="password_reset_done",
+    ),
+
+    path(
+        "reset/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="user/password_reset_confirm.html"
+        ),
+        name="password_reset_confirm",
+    ),
+
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="user/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
+    ),
+    path(
+    "financial-reports/",
+    views.financial_reports,
+    name="financial_reports"
 ),
 ]

@@ -1,361 +1,315 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<nav class="navbar navbar-expand-lg bg-primary shadow-sm">
 
     <div class="container-fluid">
 
         <!-- Sidebar Toggle -->
         <button
-    id="toggleSidebar"
-    class="btn text-white border-0 me-3 fs-5">
+            id="toggleSidebar"
+            class="btn text-white border-0 me-3"
+            type="button">
 
-    <i class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-bars fs-5"></i>
 
-</button>
+        </button>
 
-        <ul class="navbar-nav me-3">
 
-    <li class="nav-item">
-
+        <!-- Contact -->
         <a href="{% url 'contact' %}"
-           class="nav-link text-white">
+           class="nav-link text-white me-3">
 
             <i class="fa-solid fa-envelope me-1"></i>
-
             Contact
 
         </a>
 
-    </li>
-
-</ul>
 
         <!-- Search -->
-        <form class="d-flex mx-4"
-      style="width:320px;"
-      method="GET"
-      action="{% url 'event_list' %}">
+        <form
+            class="d-flex navbar-search"
+            method="GET"
+            action="{% url 'event_list' %}">
 
-    <div class="input-group">
+            <div class="input-group">
 
-        <input
-            type="search"
-            class="form-control border-0"
-            placeholder="Search by Event, Category or Venue..."
-            name="q"
-            value="{{ request.GET.q }}">
+                <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search by Event, Category or Venue..."
+                    name="q"
+                    value="{{ request.GET.q }}">
 
-        <button class="btn btn-light" type="submit">
+                <button
+                    class="btn btn-light"
+                    type="submit">
 
-            <i class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
 
-        </button>
+                </button>
 
-    </div>
+            </div>
 
-</form>
+        </form>
+
 
         <!-- Right Menu -->
         <ul class="navbar-nav ms-auto align-items-center">
 
-          <!-- Chat -->
-<li class="nav-item dropdown me-3">
+            <!-- Notification -->
+            <li class="nav-item dropdown me-3">
 
-    <a class="nav-link text-white nav-icon"
-       href="#"
-       role="button"
-       data-bs-toggle="dropdown">
+                <a
+                    class="nav-link text-white nav-icon"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
 
-        <i class="fa-regular fa-comments"></i>
+                    <i class="fa-regular fa-bell fs-5"></i>
 
-        <span class="badge rounded-pill bg-danger nav-badge">
-    {{ chat_count }}
-</span>
+                    {% if notification_count %}
+                        <span class="badge rounded-pill bg-warning text-dark nav-badge">
+                            {{ notification_count }}
+                        </span>
+                    {% endif %}
 
-    </a>
+                </a>
 
-    <ul class="dropdown-menu dropdown-menu-end shadow"
-    style="width:320px;">
 
-    <li class="dropdown-header fw-bold">
-        Messages
-    </li>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
 
-    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <h6 class="dropdown-header">
+                            Notifications
+                        </h6>
+                    </li>
 
-    {% for member in recent_join_members %}
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-    <li>
 
-        <a class="dropdown-item"
-           href="{% url 'event_member_list' %}">
+                    <!-- Recent Events -->
+                    {% for event in recent_events %}
 
-            <div class="d-flex align-items-center">
+                    <li>
 
-                <img src="{% static 'images/default-user.png' %}"
-                     class="rounded-circle me-2 border"
-                     width="40"
-                     height="40"
-                     alt="User">
+                        <a
+                            class="dropdown-item"
+                            href="{% url 'event_list' %}">
 
-                <div>
+                            <i class="fa-solid fa-calendar-days text-success me-2"></i>
 
-                    <strong>{{ member.user.username }}</strong><br>
+                            New Event:
+                            <strong>{{ event.event_name }}</strong>
 
-                    <small class="text-muted">
+                        </a>
 
-                        Joined {{ member.event.event_name }}
+                    </li>
 
-                    </small>
+                    {% endfor %}
 
-                </div>
 
-            </div>
+                    <!-- Categories -->
+                    {% for category in recent_categories %}
 
-        </a>
+                    <li>
 
-    </li>
+                        <a
+                            class="dropdown-item"
+                            href="{% url 'category_list' %}">
 
-    {% empty %}
+                            <i class="fa-solid fa-folder text-primary me-2"></i>
 
-    <li>
+                            Category:
+                            <strong>{{ category.category_name }}</strong>
 
-        <span class="dropdown-item text-muted">
+                        </a>
 
-            No Messages Available
+                    </li>
 
-        </span>
+                    {% endfor %}
 
-    </li>
 
-    {% endfor %}
+                    <!-- Members -->
+                    {% for member in recent_members %}
 
-    <li><hr class="dropdown-divider"></li>
+                    <li>
 
-    <li>
+                        <a
+                            class="dropdown-item"
+                            href="{% url 'event_member_list' %}">
 
-        <a href="{% url 'event_member_list' %}"
-           class="dropdown-item text-center text-primary fw-bold">
+                            <i class="fa-solid fa-user text-danger me-2"></i>
 
-            View All Members
+                            {{ member.user.username }}
+                            joined
+                            {{ member.event.event_name }}
 
-        </a>
+                        </a>
 
-    </li>
+                    </li>
 
-</ul>
+                    {% endfor %}
 
-</li>
 
-           <!-- Notification -->
-<li class="nav-item dropdown me-3">
+                    {% if not recent_events and not recent_categories and not recent_members %}
 
-    <a class="nav-link text-white nav-icon position-relative"
-       href="#"
-       role="button"
-       data-bs-toggle="dropdown">
+                    <li>
 
-        <i class="fa-regular fa-bell fs-5"></i>
+                        <span class="dropdown-item text-muted">
+                            No Notifications Available
+                        </span>
 
-        <span class="badge rounded-pill bg-warning text-dark nav-badge">
-            {{ notification_count }}
-        </span>
+                    </li>
 
-    </a>
+                    {% endif %}
 
-    <ul class="dropdown-menu dropdown-menu-end shadow"
-        style="min-width:320px;">
 
-        <li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-            <h6 class="dropdown-header">
 
-                Notifications
+                    <li>
 
-            </h6>
+                        <a
+                            href="{% url 'dashboard' %}"
+                            class="dropdown-item text-center fw-bold">
 
-        </li>
+                            View Dashboard
 
-        <li>
-            <hr class="dropdown-divider">
-        </li>
+                        </a>
 
-        <!-- Recent Events -->
+                    </li>
 
-        {% for event in recent_events %}
+                </ul>
 
-        <li>
+            </li>
 
-            <a class="dropdown-item" href="{% url 'event_list' %}">
 
-                <i class="fa-solid fa-calendar-days text-success me-2"></i>
+            <!-- Theme -->
+            <li class="nav-item me-3">
 
-                New Event :
-                <strong>{{ event.event_name }}</strong>
+                <button
+                    class="btn btn-link text-white p-0"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#themePanel">
 
-            </a>
+                    <i class="fa-solid fa-palette fs-5"></i>
 
-        </li>
+                </button>
 
-        {% endfor %}
+            </li>
 
-        <!-- Categories -->
 
-        {% for category in recent_categories %}
+            <!-- User Profile -->
+            <li class="nav-item dropdown">
 
-        <li>
+                <a
+                    class="nav-link dropdown-toggle d-flex align-items-center text-white"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown">
 
-            <a class="dropdown-item" href="{% url 'category_list' %}">
+                    <div class="profile-wrapper">
 
-                <i class="fa-solid fa-folder text-primary me-2"></i>
+                        <img
+                            src="{% static 'images/logo.png' %}"
+                            class="profile-img"
+                            alt="Profile">
 
-                Category :
-                <strong>{{ category.category_name }}</strong>
+                        <span class="online-dot"></span>
 
-            </a>
+                    </div>
 
-        </li>
 
-        {% endfor %}
+                    <span class="fw-semibold ms-2">
+                        {{ request.user.username }}
+                    </span>
 
-        <!-- Members -->
+                </a>
 
-        {% for member in recent_members %}
 
-        <li>
+                <!-- Profile Dropdown -->
+                <ul class="dropdown-menu dropdown-menu-end shadow">
 
-            <a class="dropdown-item"
-               href="{% url 'event_member_list' %}">
+                    <li class="dropdown-header">
 
-                <i class="fa-solid fa-user text-danger me-2"></i>
+                        <strong>
+                            {{ request.user.username }}
+                        </strong>
 
-                {{ member.user.username }}
+                        <br>
 
-                joined
+                        <small class="text-muted">
+                            Administrator
+                        </small>
 
-                {{ member.event.event_name }}
+                    </li>
 
-            </a>
 
-        </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-        {% endfor %}
 
-        <li>
-            <hr class="dropdown-divider">
-        </li>
+                    <!-- Profile -->
+                    <li>
 
-        <li>
+                        <a
+                            class="dropdown-item"
+                            href="{% url 'user_profile' %}">
 
-            <a href="{% url 'dashboard' %}"
-               class="dropdown-item text-center fw-bold">
+                            <i class="fa-solid fa-user me-2"></i>
 
-                View Dashboard
+                            Profile
 
-            </a>
+                        </a>
 
-        </li>
+                    </li>
 
-    </ul>
 
-</li>
-<!-- Theme Settings -->
+                    <!-- Settings -->
+                    <li>
 
-<li class="nav-item me-3">
+                        <a
+                            class="dropdown-item"
+                            href="#">
 
-    <button
-    class="btn btn-link text-white p-0"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#themePanel">
+                            <i class="fa-solid fa-gear me-2"></i>
 
-    <i class="fa-solid fa-palette fs-5"></i>
+                            Settings
 
-</button>
+                        </a>
 
-</li>
+                    </li>
 
-            <!-- User Profile Dropdown -->
 
-<li class="nav-item dropdown">
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-    <a class="nav-link dropdown-toggle d-flex align-items-center"
-       href="#"
-       role="button"
-       data-bs-toggle="dropdown">
 
-        <div class="profile-wrapper">
+                    <!-- Logout -->
+                    <li>
 
-            <img src="{% static 'images/logo.png' %}"
-                 class="profile-img"
-                 alt="Profile">
+                        <a
+                            class="dropdown-item text-danger"
+                            href="{% url 'logout' %}">
 
-            <span class="online-dot"></span>
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>
 
-        </div>
+                            Logout
 
-        <span class="fw-semibold ms-2">
-            Gunjan
-        </span>
+                        </a>
 
-    </a>
+                    </li>
 
-    <ul class="dropdown-menu dropdown-menu-end shadow">
+                </ul>
 
-        <li class="dropdown-header">
-
-            <strong>Gunjan</strong><br>
-
-            <small class="text-muted">
-                Administrator
-            </small>
-
-        </li>
-
-        <li><hr class="dropdown-divider"></li>
-
-        <li>
-
-            <a class="dropdown-item" href="#">
-
-                <i class="fa-solid fa-user me-2"></i>
-
-                Profile
-
-            </a>
-
-        </li>
-
-        <li>
-
-            <a class="dropdown-item" href="#">
-
-                <i class="fa-solid fa-gear me-2"></i>
-
-                Settings
-
-            </a>
-
-        </li>
-
-        <li><hr class="dropdown-divider"></li>
-
-        <li>
-
-            <a class="dropdown-item text-danger"
-               href="{% url 'logout' %}">
-
-                <i class="fa-solid fa-right-from-bracket me-2"></i>
-
-                Logout
-
-            </a>
-
-        </li>
-
-    </ul>
-
-</li>
+            </li>
 
         </ul>
 

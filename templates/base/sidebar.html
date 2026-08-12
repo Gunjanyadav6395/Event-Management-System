@@ -1,229 +1,414 @@
 {% load static %}
 
-<div id="sidebar"
-     class="bg-dark text-white shadow"
-     style="width:250px; min-width:250px; transition:all .3s ease;">
+<div id="sidebar" class="sidebar">
+<!-- ============================= -->
+<!-- LOGO -->
+<!-- ============================= -->
 
-    <!-- Logo -->
-    <div class="p-3 border-bottom">
+<div class="p-3 border-bottom">
 
-        <div class="d-flex align-items-center justify-content-center">
+    <div class="d-flex align-items-center justify-content-center">
 
-            <img src="{% static 'images/default-user.png' %}"
-                 alt="Logo"
-                 width="40"
-                 height="40"
-                 class="me-2 rounded">
+        <img
+            src="{% static 'images/default-user.png' %}"
+            alt="Logo"
+            width="40"
+            height="40"
+            class="me-2 rounded"
+        >
 
-            <h4 class="fw-bold mb-0">
-                Admin Panel
-            </h4>
+        <h4 class="fw-bold mb-0">
+            Admin Panel
+        </h4>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- PROFILE -->
+<!-- ============================= -->
+
+<div class="p-3 border-bottom">
+
+    <div class="row align-items-center">
+
+        <div class="col-3">
+
+            <img
+                src="{% static 'images/logo.png' %}"
+                class="rounded-circle img-fluid border border-2 border-light"
+                alt="User"
+            >
+
+        </div>
+
+        <div class="col-9">
+
+            <h6 class="mb-0 fw-bold text-white">
+
+                {{ request.user.get_full_name|default:request.user.username }}
+
+            </h6>
+
+            <small class="text-light">
+
+                Administrator
+
+            </small>
 
         </div>
 
     </div>
 
-    <!-- Profile -->
-    <div class="p-3 border-bottom">
+</div>
 
-        <div class="row align-items-center">
 
-            <div class="col-3">
+<!-- ============================= -->
+<!-- SIDEBAR MENU -->
+<!-- ============================= -->
 
-                <img src="{% static 'images/logo.png' %}"
-                     class="rounded-circle img-fluid border border-2 border-light"
-                     alt="User">
+<div class="list-group list-group-flush">
 
-            </div>
 
-            <div class="col-9">
+    <!-- ============================= -->
+    <!-- DASHBOARD -->
+    <!-- ============================= -->
 
-                <h6 class="mb-0 fw-bold text-white">
+    <a
+        href="{% url 'dashboard' %}"
+        class="list-group-item list-group-item-action border-0
+        {% if request.path == '/dashboard/' %}
+            active
+        {% else %}
+            bg-dark text-white
+        {% endif %}"
+    >
 
-                    {{ request.user.get_full_name|default:request.user.username }}
+        <i class="fa-solid fa-house me-2"></i>
 
-                </h6>
+        Dashboard
 
-                <small class="text-light">
+    </a>
 
-                    Administrator
 
-                </small>
+    <!-- ============================= -->
+    <!-- EVENT CATEGORY -->
+    <!-- ============================= -->
 
-            </div>
+    <a
+        class="list-group-item list-group-item-action border-0 bg-dark text-white"
+        data-bs-toggle="collapse"
+        href="#categoryMenu"
+        role="button"
+    >
 
-        </div>
+        <i class="fa-solid fa-folder me-2"></i>
 
-    </div>
+        Event Category
 
-    <!-- Sidebar Menu -->
-    <div class="list-group list-group-flush">
+        <i class="fa-solid fa-angle-down float-end mt-1"></i>
 
-        <!-- Dashboard -->
+    </a>
 
-        <a href="{% url 'dashboard' %}"
-           class="list-group-item list-group-item-action border-0
-           {% if request.path == '/dashboard/' %}
+
+    <div
+        class="collapse
+        {% if '/create-category/' in request.path or '/category-list/' in request.path or '/edit-category/' in request.path %}
+            show
+        {% endif %}"
+        id="categoryMenu"
+    >
+
+
+        <!-- Create Category -->
+
+        <a
+            href="{% url 'create_event_category' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/create-category/' in request.path %}
                 active
-           {% else %}
-                bg-dark text-white
-           {% endif %}">
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
 
-            <i class="fa-solid fa-house me-2"></i>
+            <i class="fa-solid fa-plus me-2"></i>
 
-            Dashboard
-
-        </a>
-
-        <!-- Event Category -->
-
-        <a class="list-group-item list-group-item-action border-0 bg-dark text-white"
-           data-bs-toggle="collapse"
-           href="#categoryMenu">
-
-            <i class="fa-solid fa-folder me-2"></i>
-
-            Event Category
-
-            <i class="fa-solid fa-angle-down float-end mt-1"></i>
+            Create Category
 
         </a>
 
-        <div class="collapse {% if '/create-category/' in request.path or '/category-list/' in request.path or '/edit-category/' in request.path %}show{% endif %}"
-             id="categoryMenu">
 
-            <!-- Create Category -->
+        <!-- Category List -->
 
-            <a href="{% url 'create_event_category' %}"
-               class="list-group-item list-group-item-action border-0 ps-5
-               {% if '/create-category/' in request.path %}
-                    active
-               {% else %}
-                    bg-secondary text-white
-               {% endif %}">
+        <a
+            href="{% url 'category_list' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/category-list/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
 
-                Create Category
+            <i class="fa-solid fa-list me-2"></i>
 
-            </a>
+            Category List
 
-            <!-- Category List -->
+        </a>
 
-            <a href="{% url 'category_list' %}"
-               class="list-group-item list-group-item-action border-0 ps-5
-               {% if '/category-list/' in request.path %}
-                    active
-               {% else %}
-                    bg-secondary text-white
-               {% endif %}">
 
-                Category List
+    </div>
+        <!-- ============================= -->
+    <!-- EVENTS -->
+    <!-- ============================= -->
 
-            </a>
+    <a
+        class="list-group-item list-group-item-action border-0 bg-dark text-white"
+        data-bs-toggle="collapse"
+        href="#eventMenu"
+        role="button"
+    >
 
-        </div>
-        <!-- Events -->
+        <i class="fa-solid fa-calendar-days me-2"></i>
 
-<a class="list-group-item list-group-item-action border-0 bg-dark text-white"
-   data-bs-toggle="collapse"
-   href="#eventMenu">
+        Events
 
-    <i class="fa-solid fa-calendar-days me-2"></i>
+        <i class="fa-solid fa-angle-down float-end mt-1"></i>
 
-    Events
+    </a>
+
+
+    <div
+        class="collapse
+        {% if '/create-event/' in request.path or '/event-list/' in request.path or '/event-detail/' in request.path or '/edit-event/' in request.path or '/complete-event-list/' in request.path %}
+            show
+        {% endif %}"
+        id="eventMenu"
+    >
+
+
+        <!-- Create Event -->
+
+        <a
+            href="{% url 'create_event' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/create-event/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-plus me-2"></i>
+
+            Create Event
+
+        </a>
+
+
+        <!-- Event List -->
+
+        <a
+            href="{% url 'event_list' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/event-list/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-list me-2"></i>
+
+            Event List
+
+        </a>
+
+
+        <!-- Complete Event List -->
+
+        <a
+            href="{% url 'complete_event_list' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/complete-event-list/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-check-circle me-2"></i>
+
+            Complete Event List
+
+        </a>
+
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- MEMBERS -->
+    <!-- ============================= -->
+
+    <a
+        class="list-group-item list-group-item-action border-0 bg-dark text-white"
+        data-bs-toggle="collapse"
+        href="#memberMenu"
+        role="button"
+    >
+
+        <i class="fa-solid fa-users me-2"></i>
+
+        Members
+
+        <i class="fa-solid fa-angle-down float-end mt-1"></i>
+
+    </a>
+
+
+    <div
+        class="collapse
+        {% if '/create-event-member/' in request.path or '/event-member-list/' in request.path or '/event-wish-list/' in request.path or '/create-event-wish-user/' in request.path %}
+            show
+        {% endif %}"
+        id="memberMenu"
+    >
+
+
+        <!-- Add Event Member -->
+
+        <a
+            href="{% url 'create_event_member' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/create-event-member/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-user-plus me-2"></i>
+
+            Add Event Member
+
+        </a>
+
+
+        <!-- Join Event List -->
+
+        <a
+            href="{% url 'event_member_list' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/event-member-list/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-user-check me-2"></i>
+
+            Join Event List
+
+        </a>
+                <!-- Event Wish List -->
+
+        <a
+            href="{% url 'event_wish_list' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/event-wish-list/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-heart me-2"></i>
+
+            Event Wish List
+
+        </a>
+
+
+        <!-- Add Event Wish User -->
+
+        <a
+            href="{% url 'create_event_wish_user' %}"
+            class="list-group-item list-group-item-action border-0 ps-5
+            {% if '/create-event-wish-user/' in request.path %}
+                active
+            {% else %}
+                bg-secondary text-white
+            {% endif %}"
+        >
+
+            <i class="fa-solid fa-user-plus me-2"></i>
+
+            Add Event Wish User
+
+        </a>
+
+
+    </div>
+
+
+</div>
+<!-- ============================= -->
+<!-- BUDGET & FINANCE -->
+<!-- ============================= -->
+
+<a
+    class="list-group-item list-group-item-action border-0 bg-dark text-white"
+    data-bs-toggle="collapse"
+    href="#financeMenu"
+    role="button"
+    aria-expanded="false"
+    aria-controls="financeMenu"
+>
+
+    <i class="fa-solid fa-chart-line me-2"></i>
+
+    Budget & Finance
 
     <i class="fa-solid fa-angle-down float-end mt-1"></i>
 
 </a>
 
-<div class="collapse {% if '/create-event/' in request.path or '/event-list/' in request.path or '/edit-event/' in request.path or '/create-event-member/' in request.path or '/event-member-list/' in request.path or '/create-event-wish/' in request.path or '/event-wish-list/' in request.path or '/create-event-wish-user/' in request.path or '/event-wish-user-list/' in request.path or '/complete-event-list/' in request.path %}show{% endif %}"
-     id="eventMenu">
 
-    <a href="{% url 'create_event' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/create-event/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
+<div
+    class="collapse"
+    id="financeMenu"
+>
 
-        Create Event
+    <!-- Manage Event Finances -->
 
-    </a>
+    <a
+        href="#"
+        class="list-group-item list-group-item-action border-0 ps-5 bg-secondary text-white"
+    >
 
-    <a href="{% url 'event_list' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/event-list/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
+        <i class="fa-solid fa-money-bill-wave me-2"></i>
 
-        Event List
+        Manage Event Finances
 
     </a>
 
-    <a href="{% url 'create_event_member' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/create-event-member/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
 
-        Add Event Member
+    <!-- Financial Reports -->
 
-    </a>
+    <a
+        href="#"
+        class="list-group-item list-group-item-action border-0 ps-5 bg-secondary text-white"
+    >
 
-    <a href="{% url 'event_member_list' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/event-member-list/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
+        <i class="fa-solid fa-file-invoice-dollar me-2"></i>
 
-        Join Event List
+        Financial Reports
 
     </a>
-
-    <a href="{% url 'event_wish_list' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/event-wish-list/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
-
-        Event Wish List
-
-    </a>
-
-    <a href="{% url 'create_event_wish_user' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/create-event-wish-user/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
-
-        Add Event Wish User
-
-    </a>
-
-    <a href="{% url 'complete_event_list' %}"
-       class="list-group-item list-group-item-action border-0 ps-5
-       {% if '/complete-event-list/' in request.path %}
-            active
-       {% else %}
-            bg-secondary text-white
-       {% endif %}">
-
-        Complete Event List
-
-    </a>
-
 </div>
-
-</div>
-
 </div>
