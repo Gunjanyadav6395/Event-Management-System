@@ -2,276 +2,381 @@
 
 {% block content %}
 
-<div class="container-fluid py-4">
+<style>
+    .ticket-page {
+        background: #eef3ff;
+        min-height: calc(100vh - 70px);
+        padding: 30px;
+    }
 
-    <!-- Ticket Main Card -->
-    <div class="card shadow-sm border-0">
+    .ticket-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
 
-        <!-- Ticket Header -->
-        <div class="card-header bg-primary text-white py-3">
+    .ticket-page-header h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0;
+    }
 
-            <div class="d-flex align-items-center">
+    .ticket-page-header p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
 
-                <i class="fas fa-ticket-alt fa-2x me-3"></i>
+    .ticket-card {
+        width: 360px;
+        max-width: 100%;
+        background: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        margin-bottom: 30px;
+    }
 
-                <div>
-                    <h2 class="fw-bold mb-0">
-                        Event Ticket
-                    </h2>
+    .ticket-top {
+        background: #212529;
+        padding: 14px 18px;
+        text-align: center;
+        min-height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-                    <small>
-                        Digital Event Registration Ticket
-                    </small>
-                </div>
+    .ticket-top h4 {
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        line-height: 1.2;
+    }
 
-            </div>
+    .ticket-top h4 span {
+        background: #0d6efd;
+        padding: 0 4px;
+    }
+
+    .ticket-body {
+        padding: 18px;
+    }
+
+    .ticket-qr {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    #qrcode {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: #ffffff;
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+    }
+
+    .participant-name {
+        text-align: center;
+        color: #0d6efd;
+        font-size: 18px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .registration-id {
+        text-align: center;
+        color: #777;
+        font-size: 12px;
+        margin-bottom: 18px;
+    }
+
+    .ticket-divider {
+        border: 0;
+        border-top: 1px solid #ddd;
+        margin: 15px 0;
+    }
+
+    .ticket-info {
+        margin-bottom: 10px;
+    }
+
+    .ticket-info i {
+        width: 20px;
+        margin-right: 6px;
+    }
+
+    .ticket-info strong {
+        font-size: 13px;
+        color: #222;
+    }
+
+    .ticket-info span {
+        font-size: 13px;
+        color: #333;
+    }
+
+    .ticket-status {
+        margin-top: 20px;
+        background: #198754;
+        color: #ffffff;
+        border-radius: 5px;
+        padding: 7px 10px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .ticket-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .ticket-actions .btn {
+        flex: 1;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .ticket-note {
+        position: absolute;
+        top: 100px;
+        right: 40px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+
+        .ticket-page {
+            padding: 20px;
+        }
+
+        .ticket-page-header {
+            display: block;
+        }
+
+        .ticket-page-header p {
+            margin-top: 5px;
+        }
+
+        .ticket-note {
+            position: static;
+            margin-bottom: 15px;
+        }
+
+        .ticket-card {
+            width: 100%;
+            max-width: 380px;
+        }
+    }
+
+    @media print {
+
+        .sidebar,
+        .navbar,
+        header,
+        footer,
+        .ticket-page-header,
+        .ticket-note,
+        .ticket-actions {
+            display: none !important;
+        }
+
+        .ticket-page {
+            background: #ffffff !important;
+            padding: 0 !important;
+        }
+
+        .ticket-card {
+            box-shadow: none !important;
+            border: 1px solid #ddd;
+        }
+    }
+</style>
+
+
+<div class="ticket-page">
+
+    <!-- PAGE HEADER -->
+    <div class="ticket-page-header">
+
+        <div>
+            <h2>
+                <i class="fas fa-ticket-alt me-2"></i>
+                My Event Tickets
+            </h2>
+
+            <p>
+                Your registered event tickets
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="ticket-note">
+        Show your QR code at the venue for check-in.
+    </div>
+
+
+    <!-- TICKET CARD -->
+    <div class="ticket-card">
+
+        <!-- EVENT TITLE -->
+        <div class="ticket-top">
+
+            <h4>
+                <span>
+                    {{ event.event_name }}
+                </span>
+            </h4>
 
         </div>
 
 
-        <!-- Ticket Body -->
-        <div class="card-body p-4">
+        <div class="ticket-body">
 
-            <!-- Ticket Number -->
-            <div class="text-center mb-4">
+            <!-- QR CODE -->
+            <div class="ticket-qr">
 
-                <p class="text-muted fs-5 mb-1">
-                    Ticket Number
-                </p>
-
-                <h1 class="fw-bold text-primary">
-                    {{ ticket_number }}
-                </h1>
+                <div id="qrcode"></div>
 
             </div>
 
 
-            <hr>
+            <!-- PARTICIPANT -->
+            <div class="participant-name">
 
-
-            <!-- Event Information + QR -->
-            <div class="row g-4 mt-2">
-
-                <!-- LEFT SIDE -->
-                <div class="col-lg-8">
-
-                    <div class="table-responsive">
-
-                        <table class="table table-bordered align-middle mb-0">
-
-                            <tbody>
-
-                                <!-- Event Name -->
-                                <tr>
-                                    <th style="width: 35%;">
-                                        Event Name
-                                    </th>
-
-                                    <td class="fw-bold fs-5">
-                                        {{ event.event_name }}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Category -->
-                                <tr>
-                                    <th>
-                                        Category
-                                    </th>
-
-                                    <td>
-                                        {{ event.category.category_name }}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Participant -->
-                                <tr>
-                                    <th>
-                                        Participant
-                                    </th>
-
-                                    <td>
-                                        {{ member.user.get_full_name|default:member.user.username }}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Email -->
-                                <tr>
-                                    <th>
-                                        Email
-                                    </th>
-
-                                    <td>
-                                        {{ member.user.email }}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Event Date -->
-                                <tr>
-                                    <th>
-                                        Event Date
-                                    </th>
-
-                                    <td>
-
-                                        {% if event.event_date %}
-                                            {{ event.event_date|date:"F d, Y" }}
-                                        {% else %}
-                                            Not specified
-                                        {% endif %}
-
-                                    </td>
-                                </tr>
-
-
-                                <!-- Venue -->
-                                <tr>
-                                    <th>
-                                        Venue
-                                    </th>
-
-                                    <td>
-                                        {{ event.venue|default:"Not specified" }}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Generated On -->
-                                <tr>
-                                    <th>
-                                        Generated On
-                                    </th>
-
-                                    <td>
-                                        {% now "M d, Y, g:i A" %}
-                                    </td>
-                                </tr>
-
-
-                                <!-- Status -->
-                                <tr>
-                                    <th>
-                                        Status
-                                    </th>
-
-                                    <td>
-
-                                        <span class="badge bg-success px-3 py-2">
-                                            Registered
-                                        </span>
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-
-                <!-- RIGHT SIDE -->
-                <div class="col-lg-4">
-
-                    <div class="text-center">
-
-                        <!-- Event Image -->
-                        {% if event.image %}
-
-                            <img
-                                src="{{ event.image.url }}"
-                                alt="{{ event.event_name }}"
-                                class="img-fluid rounded shadow-sm mb-3"
-                                style="
-                                    width: 100%;
-                                    max-height: 180px;
-                                    object-fit: cover;
-                                "
-                            >
-
-                        {% else %}
-
-                            <div
-                                class="bg-light rounded shadow-sm d-flex align-items-center justify-content-center mb-3"
-                                style="
-                                    width: 100%;
-                                    height: 180px;
-                                "
-                            >
-
-                                <i class="fas fa-calendar-alt fa-4x text-primary"></i>
-
-                            </div>
-
-                        {% endif %}
-
-
-                        <!-- QR Code -->
-                        <h5 class="fw-bold mb-2">
-                            QR Code
-                        </h5>
-
-                        <div
-                            id="qrcode"
-                            class="d-flex justify-content-center mb-2"
-                        ></div>
-
-                        <small class="text-muted">
-                            Scan this code at event entry
-                        </small>
-
-                    </div>
-
-                </div>
+                {{ member.user.get_full_name|default:member.user.username }}
 
             </div>
 
 
-            <hr class="my-4">
+            <!-- REGISTRATION ID -->
+            <div class="registration-id">
 
-
-            <!-- Important Message -->
-            <div class="alert alert-info mb-4">
-
-                <strong>
-                    Important:
-                </strong>
-
-                Please present this ticket at the event entrance.
-                The QR Code will be verified before allowing access.
+                Registration ID: {{ ticket_number }}
 
             </div>
 
 
-            <!-- Buttons -->
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <hr class="ticket-divider">
 
-                <!-- Back -->
+
+            <!-- EVENT DATE -->
+            <div class="ticket-info">
+
+                <i class="fas fa-calendar text-primary"></i>
+
+                <strong>Date:</strong>
+
+                <span>
+
+                    {% if event.event_date %}
+
+                        {{ event.event_date|date:"F d, Y" }}
+
+                    {% else %}
+
+                        Not specified
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <!-- VENUE -->
+            <div class="ticket-info">
+
+                <i class="fas fa-map-marker-alt text-danger"></i>
+
+                <strong>Venue:</strong>
+
+                <span>
+
+                    {{ event.venue|default:"Not specified" }}
+
+                </span>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+            <div class="ticket-info">
+
+                <i class="fas fa-folder text-warning"></i>
+
+                <strong>Category:</strong>
+
+                <span>
+
+                    {{ event.category.category_name }}
+
+                </span>
+
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="ticket-info">
+
+                <i class="fas fa-envelope text-primary"></i>
+
+                <strong>Email:</strong>
+
+                <span>
+
+                    {{ member.user.email }}
+
+                </span>
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="ticket-status">
+
+                <i class="fas fa-check-circle me-1"></i>
+
+                Confirmed
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+            <div class="ticket-actions">
+
                 <button
                     type="button"
                     onclick="history.back()"
-                    class="btn btn-secondary px-4"
+                    class="btn btn-secondary"
                 >
 
-                    <i class="fas fa-arrow-left me-2"></i>
-                    Back to My Events
+                    <i class="fas fa-arrow-left me-1"></i>
+
+                    Back
 
                 </button>
 
 
-                <!-- Print -->
                 <button
                     type="button"
                     onclick="window.print()"
-                    class="btn btn-primary px-4"
+                    class="btn btn-primary"
                 >
 
-                    <i class="fas fa-print me-2"></i>
+                    <i class="fas fa-print me-1"></i>
+
                     Print Ticket
 
                 </button>
@@ -291,92 +396,22 @@
 
 <script>
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        new QRCode(document.getElementById("qrcode"), {
-
+    new QRCode(
+        document.getElementById("qrcode"),
+        {
             text: "{{ ticket_number }}",
-
-            width: 150,
-
-            height: 150,
-
+            width: 135,
+            height: 135,
             colorDark: "#000000",
-
             colorLight: "#ffffff",
-
             correctLevel: QRCode.CorrectLevel.H
+        }
+    );
 
-        });
-
-    });
+});
 
 </script>
-
-
-<!-- PRINT CSS -->
-<style>
-
-    @media print {
-
-        body {
-            background: white !important;
-        }
-
-        .sidebar,
-        .navbar,
-        header,
-        footer {
-            display: none !important;
-        }
-
-        .card {
-            box-shadow: none !important;
-            border: 1px solid #ddd !important;
-        }
-
-        .btn {
-            display: none !important;
-        }
-
-        .alert {
-            border: 1px solid #bee5eb !important;
-        }
-
-    }
-
-
-    #qrcode {
-
-        background: white;
-
-        padding: 10px;
-
-        display: inline-flex;
-
-        border-radius: 8px;
-
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-
-    }
-
-
-    .table th {
-
-        font-weight: 700;
-
-        background-color: #f8f9fa;
-
-    }
-
-
-    .table td,
-    .table th {
-
-        padding: 12px;
-
-    }
-
-</style>
 
 {% endblock %}
