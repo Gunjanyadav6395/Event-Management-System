@@ -1,0 +1,153 @@
+{% extends "base/user_base.html" %}
+
+{% block title %}
+QR Code Scanner | Event Management System
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            <i class="fa-solid fa-qrcode text-primary me-2"></i>
+            Scan Event QR Code
+        </h2>
+
+        <p class="text-muted">
+            Scan a participant's ticket QR code to verify their registration.
+        </p>
+
+    </div>
+
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header bg-primary text-white text-center py-3">
+
+                    <h5 class="mb-0">
+
+                        <i class="fa-solid fa-camera me-2"></i>
+
+                        QR Code Scanner
+
+                    </h5>
+
+                </div>
+
+
+                <!-- CARD BODY -->
+
+                <div class="card-body p-4">
+
+                    <!-- CAMERA SCANNER -->
+
+                    <div
+                        id="reader"
+                        style="width:100%;"
+                    ></div>
+
+
+                    <!-- RESULT -->
+
+                    <div
+                        id="scan-result"
+                        class="mt-4"
+                    ></div>
+
+
+                    <!-- INSTRUCTION -->
+
+                    <div class="alert alert-info mt-4 mb-0">
+
+                        <i class="fa-solid fa-circle-info me-2"></i>
+
+                        Please allow camera permission and place the
+                        participant's QR code in front of the camera.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- QR SCANNER LIBRARY -->
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+
+<script>
+
+function onScanSuccess(decodedText, decodedResult) {
+
+    console.log("QR Code:", decodedText);
+
+    document.getElementById("scan-result").innerHTML = `
+
+        <div class="alert alert-success">
+
+            <i class="fa-solid fa-circle-check me-2"></i>
+
+            QR Code detected successfully!
+
+            <br>
+
+            <strong>Ticket:</strong> ${decodedText}
+
+        </div>
+
+    `;
+
+}
+
+
+function onScanFailure(error) {
+
+    // Scanner continuously checks for QR code.
+    // No message is required here.
+
+}
+
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+
+    "reader",
+
+    {
+        fps: 10,
+        qrbox: {
+            width: 250,
+            height: 250
+        }
+    },
+
+    false
+
+);
+
+
+html5QrcodeScanner.render(
+
+    onScanSuccess,
+    onScanFailure
+
+);
+
+</script>
+
+{% endblock %}

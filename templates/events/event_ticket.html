@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "base/user_base.html" %}
 
 {% block content %}
 
@@ -271,28 +271,25 @@
             <hr class="ticket-divider">
 
 
-            <!-- EVENT DATE -->
-            <div class="ticket-info">
+           <!-- EVENT DATE -->
 
-                <i class="fas fa-calendar text-primary"></i>
+<div class="ticket-info">
 
-                <strong>Date:</strong>
+    <i class="fas fa-calendar text-primary"></i>
 
-                <span>
+    <strong>Date:</strong>
 
-                    {% if event.event_date %}
+    <span>
 
-                        {{ event.event_date|date:"F d, Y" }}
+        {{ event.start_date|date:"F d, Y" }}
 
-                    {% else %}
+        {% if event.end_date and event.end_date != event.start_date %}
+            - {{ event.end_date|date:"F d, Y" }}
+        {% endif %}
 
-                        Not specified
+    </span>
 
-                    {% endif %}
-
-                </span>
-
-            </div>
+</div>
 
 
             <!-- VENUE -->
@@ -354,38 +351,31 @@
 
 
             <!-- ACTION BUTTONS -->
-            <div class="ticket-actions">
+<div class="ticket-actions">
 
-                <button
-                    type="button"
-                    onclick="history.back()"
-                    class="btn btn-secondary"
-                >
+    <a
+        href="{% url 'my_registered_events' %}"
+        class="btn btn-secondary"
+    >
 
-                    <i class="fas fa-arrow-left me-1"></i>
+        <i class="fas fa-arrow-left me-1"></i>
 
-                    Back
+        My Events
 
-                </button>
+    </a>
 
 
-                <button
-                    type="button"
-                    onclick="window.print()"
-                    class="btn btn-primary"
-                >
+    <button
+        type="button"
+        onclick="window.print()"
+        class="btn btn-primary"
+    >
 
-                    <i class="fas fa-print me-1"></i>
+        <i class="fas fa-print me-1"></i>
 
-                    Print Ticket
+        Print Ticket
 
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
+    </button>
 
 </div>
 

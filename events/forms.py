@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    PasswordChangeForm,
+)
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from .models import (
     EventCategory,
@@ -11,9 +15,11 @@ from .models import (
     Contact,
     BudgetFinance,
 )
-# ==========================
-# Event Category Form
-# ==========================
+
+
+# ============================================================
+# EVENT CATEGORY FORM
+# ============================================================
 
 class EventCategoryForm(forms.ModelForm):
 
@@ -51,13 +57,12 @@ class EventCategoryForm(forms.ModelForm):
             "status": forms.Select(attrs={
                 "class": "form-select"
             }),
-
         }
 
 
-# ==========================
-# Event Form
-# ==========================
+# ============================================================
+# EVENT FORM
+# ============================================================
 
 class EventForm(forms.ModelForm):
 
@@ -116,13 +121,64 @@ class EventForm(forms.ModelForm):
             "status": forms.CheckboxInput(attrs={
                 "class": "form-check-input"
             }),
-
         }
 
+    # --------------------------------------------------------
+    # DATE RESTRICTION
+    # --------------------------------------------------------
 
-# ==========================
-# Event Member Form
-# ==========================
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        today = timezone.localdate().isoformat()
+
+        self.fields["start_date"].widget.attrs["min"] = today
+        self.fields["end_date"].widget.attrs["min"] = today
+
+    # --------------------------------------------------------
+    # DATE VALIDATION
+    # --------------------------------------------------------
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+
+        today = timezone.localdate()
+
+        # Start date cannot be in the past
+        if start_date and start_date < today:
+
+            self.add_error(
+                "start_date",
+                "Start date cannot be in the past."
+            )
+
+        # End date cannot be in the past
+        if end_date and end_date < today:
+
+            self.add_error(
+                "end_date",
+                "End date cannot be in the past."
+            )
+
+        # End date cannot be before start date
+        if start_date and end_date and end_date < start_date:
+
+            self.add_error(
+                "end_date",
+                "End date cannot be before the start date."
+            )
+
+        return cleaned_data
+
+
+# ============================================================
+# EVENT MEMBER FORM
+# ============================================================
 
 class EventMemberForm(forms.ModelForm):
 
@@ -138,22 +194,22 @@ class EventMemberForm(forms.ModelForm):
         widgets = {
 
             "user": forms.Select(attrs={
-    "class": "form-select",
-    "id": "user-select",
-}),
+                "class": "form-select",
+                "id": "user-select",
+            }),
 
-"event": forms.Select(attrs={
-    "class": "form-select",
-    "id": "event-select",
-}),
+            "event": forms.Select(attrs={
+                "class": "form-select",
+                "id": "event-select",
+            }),
 
             "status": forms.CheckboxInput(attrs={
                 "class": "form-check-input"
             }),
-
         }
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
 
         self.fields["user"].empty_label = "Select User"
@@ -162,8 +218,11 @@ class EventMemberForm(forms.ModelForm):
         self.fields["user"].label = "User"
         self.fields["event"].label = "Event"
         self.fields["status"].label = "Status"
-    
-    # ---------------- EVENT WISH USER ----------------
+
+
+# ============================================================
+# EVENT WISH USER FORM
+# ============================================================
 
 class EventWishUserForm(forms.ModelForm):
 
@@ -189,10 +248,10 @@ class EventWishUserForm(forms.ModelForm):
             "status": forms.CheckboxInput(attrs={
                 "class": "form-check-input"
             }),
-
         }
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
 
         self.fields["user"].empty_label = "Select User"
@@ -202,7 +261,10 @@ class EventWishUserForm(forms.ModelForm):
         self.fields["event"].label = "Event"
         self.fields["status"].label = "Status"
 
-    # ---------------- EVENT WISH ----------------
+
+# ============================================================
+# EVENT WISH FORM
+# ============================================================
 
 class EventWishForm(forms.ModelForm):
 
@@ -228,10 +290,10 @@ class EventWishForm(forms.ModelForm):
             "status": forms.CheckboxInput(attrs={
                 "class": "form-check-input"
             }),
-
         }
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
 
         self.fields["user"].empty_label = "Select User"
@@ -241,9 +303,10 @@ class EventWishForm(forms.ModelForm):
         self.fields["event"].label = "Event"
         self.fields["status"].label = "Status"
 
-    # ==========================
-# Contact Form
-# ==========================
+
+# ============================================================
+# CONTACT FORM
+# ============================================================
 
 class ContactForm(forms.ModelForm):
 
@@ -279,88 +342,68 @@ class ContactForm(forms.ModelForm):
                 "rows": 5,
                 "placeholder": "Write your message..."
             }),
-
         }
-# ==========================
-# User Profile Form
-# ==========================
+
+
+# ============================================================
+# USER PROFILE FORM
+# ============================================================
 
 class UserProfileForm(forms.ModelForm):
 
     class Meta:
-
         model = User
 
         fields = [
-
             "first_name",
-
             "last_name",
-
             "username",
-
             "email",
-
         ]
 
         widgets = {
 
             "first_name": forms.TextInput(attrs={
-
                 "class": "form-control"
-
             }),
 
             "last_name": forms.TextInput(attrs={
-
                 "class": "form-control"
-
             }),
 
             "username": forms.TextInput(attrs={
-
                 "class": "form-control"
-
             }),
 
             "email": forms.EmailInput(attrs={
-
                 "class": "form-control"
-
             }),
-
         }
-# ==========================
-# User Registration Form
-# ==========================
+
+
+# ============================================================
+# USER REGISTRATION FORM
+# ============================================================
 
 class UserRegisterForm(UserCreationForm):
 
     email = forms.EmailField(
-
         widget=forms.EmailInput(
             attrs={
                 "class": "form-control",
                 "placeholder": "Enter Email"
             }
         )
-
     )
 
     class Meta:
-
         model = User
 
         fields = [
-
             "username",
-
             "email",
-
             "password1",
-
             "password2",
-
         ]
 
         widgets = {
@@ -371,7 +414,6 @@ class UserRegisterForm(UserCreationForm):
                     "placeholder": "Enter Username"
                 }
             ),
-
         }
 
     def __init__(self, *args, **kwargs):
@@ -379,73 +421,54 @@ class UserRegisterForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         self.fields["password1"].widget.attrs.update({
-
             "class": "form-control",
             "placeholder": "Enter Password"
-
         })
 
         self.fields["password2"].widget.attrs.update({
-
             "class": "form-control",
             "placeholder": "Confirm Password"
-
         })
-from django.contrib.auth.forms import PasswordChangeForm
 
+
+# ============================================================
+# USER PASSWORD CHANGE FORM
+# ============================================================
 
 class UserPasswordChangeForm(PasswordChangeForm):
 
     old_password = forms.CharField(
-
         widget=forms.PasswordInput(
-
             attrs={
-
                 "class": "form-control"
-
             }
-
         )
-
     )
 
     new_password1 = forms.CharField(
-
         widget=forms.PasswordInput(
-
             attrs={
-
                 "class": "form-control"
-
             }
-
         )
-
     )
 
     new_password2 = forms.CharField(
-
         widget=forms.PasswordInput(
-
             attrs={
-
                 "class": "form-control"
-
             }
-
         )
-
     )
 
-# ==========================
-# Budget & Finance Form
-# ==========================
+
+# ============================================================
+# BUDGET & FINANCE FORM
+# ============================================================
 
 class BudgetFinanceForm(forms.ModelForm):
 
     class Meta:
-
         model = BudgetFinance
 
         fields = [

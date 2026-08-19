@@ -324,9 +324,9 @@
             <!-- Event Wish List -->
 
             <a
-                href="{% url 'event_wish_list' %}"
+                href="{% url 'event_wish_user_list' %}"
                 class="list-group-item list-group-item-action border-0 ps-5
-                {% if '/event-wish-list/' in request.path %}
+                {% if '/event-wish-user-list/' in request.path %}
                     active
                 {% else %}
                     bg-secondary text-white

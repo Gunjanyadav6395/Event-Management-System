@@ -665,6 +665,76 @@ def event_member_list(request):
 
     )
 
+# ===========================
+# EDIT EVENT MEMBER
+# ===========================
+
+@login_required
+def edit_event_member(request, id):
+
+    member = get_object_or_404(
+        EventMember,
+        id=id
+    )
+
+    if request.method == "POST":
+
+        form = EventMemberForm(
+            request.POST,
+            instance=member
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            messages.success(
+                request,
+                "Member updated successfully."
+            )
+
+            return redirect(
+                "event_member_list"
+            )
+
+    else:
+
+        form = EventMemberForm(
+            instance=member
+        )
+
+    return render(
+        request,
+        "events/edit_event_member.html",
+        {
+            "form": form,
+            "member": member,
+        }
+    )
+
+
+# ===========================
+# DELETE EVENT MEMBER
+# ===========================
+
+@login_required
+def delete_event_member(request, id):
+
+    member = get_object_or_404(
+        EventMember,
+        id=id
+    )
+
+    member.delete()
+
+    messages.success(
+        request,
+        "Member deleted successfully."
+    )
+
+    return redirect(
+        "event_member_list"
+    )
 
 # ===========================
 # CREATE EVENT WISH
@@ -940,9 +1010,7 @@ def contact(request):
     if request.method == "POST":
 
         form = ContactForm(
-
             request.POST,
-
         )
 
         if form.is_valid():
@@ -950,11 +1018,8 @@ def contact(request):
             form.save()
 
             messages.success(
-
                 request,
-
                 "Your message has been sent successfully."
-
             )
 
             return redirect("contact")
@@ -963,20 +1028,25 @@ def contact(request):
 
         form = ContactForm()
 
+    # Normal User → User Contact Page
+    if not request.user.is_staff and not request.user.is_superuser:
+
+        return render(
+            request,
+            "user/user_contact.html",
+            {
+                "form": form,
+            }
+        )
+
+    # Admin → Existing Admin Contact Page
     return render(
-
         request,
-
         "events/contact.html",
-
         {
-
             "form": form,
-
         }
-
     )
-
 
 # ===========================
 # USER LIST
@@ -1080,6 +1150,24 @@ def user_event_detail(request, id):
 
     ).exists()
 
+    wishlist_event_ids = set(
+
+        EventWish.objects.filter(
+
+            user=request.user,
+
+            status=True,
+
+        ).values_list(
+
+            "event_id",
+
+            flat=True
+
+        )
+
+    )
+
     return render(
 
         request,
@@ -1092,10 +1180,11 @@ def user_event_detail(request, id):
 
             "registered": registered,
 
+            "wishlist_event_ids": wishlist_event_ids,
+
         }
 
     )
-
 
 # ===========================
 # REGISTER EVENT
@@ -1194,6 +1283,103 @@ def my_registered_events(request):
 
         }
 
+    )
+# ===========================
+# USER WISHLIST
+# ===========================
+
+@login_required
+def add_to_wishlist(request, id):
+
+    event = get_object_or_404(
+        Event,
+        id=id
+    )
+
+    wishlist_item, created = EventWish.objects.get_or_create(
+        user=request.user,
+        event=event,
+        defaults={
+            "status": True
+        }
+    )
+
+    if not created:
+
+        wishlist_item.status = True
+        wishlist_item.save()
+
+        messages.info(
+            request,
+            "Event is already in your wishlist."
+        )
+
+    else:
+
+        messages.success(
+            request,
+            "Event added to your wishlist."
+        )
+
+    return redirect(
+        "user_event_detail",
+        id=event.id
+    )
+
+
+# ===========================
+# REMOVE FROM WISHLIST
+# ===========================
+
+@login_required
+def remove_from_wishlist(request, id):
+
+    event = get_object_or_404(
+        Event,
+        id=id
+    )
+
+    EventWish.objects.filter(
+        user=request.user,
+        event=event
+    ).update(
+        status=False
+    )
+
+    messages.success(
+        request,
+        "Event removed from your wishlist."
+    )
+
+    return redirect(
+        "user_event_detail",
+        id=event.id
+    )
+
+
+# ===========================
+# MY WISHLIST
+# ===========================
+
+@login_required
+def my_wishlist(request):
+
+    wishlist = EventWish.objects.filter(
+        user=request.user,
+        status=True
+    ).select_related(
+        "event",
+        "event__category"
+    ).order_by(
+        "-created_at"
+    )
+
+    return render(
+        request,
+        "user/my_wishlist.html",
+        {
+            "wishlist": wishlist
+        }
     )
 # =====================================
 # USER LOGIN
@@ -1463,5 +1649,76 @@ def event_ticket(request, id):
             "member": member,
             "event": event,
             "ticket_number": ticket_number,
+        }
+    )
+# ===========================
+# ADMIN QR CODE SCANNER
+# ===========================
+
+@login_required
+def scan_qr(request):
+
+    # Only Admin / Staff can access QR Scanner
+
+    if not request.user.is_staff and not request.user.is_superuser:
+
+        messages.error(
+            request,
+            "You are not authorized to access the QR Scanner."
+        )
+
+        return redirect("user_event_list")
+
+    return render(
+        request,
+        "events/scan_qr.html"
+    )
+# ===========================
+# ADMIN TICKET VERIFICATION
+# ===========================
+
+@login_required
+def verify_ticket(request):
+
+    ticket = None
+    error = None
+
+    # Only Admin can access
+    if not request.user.is_staff and not request.user.is_superuser:
+        return redirect("user_event_list")
+
+    if request.method == "POST":
+
+        ticket_number = request.POST.get("ticket_number")
+
+        if ticket_number:
+
+            try:
+
+                member_id = int(
+                    ticket_number.replace("EVT-", "")
+                )
+
+                ticket = EventMember.objects.select_related(
+                    "user",
+                    "event",
+                    "event__category",
+                ).get(
+                    id=member_id
+                )
+
+            except (
+                ValueError,
+                EventMember.DoesNotExist
+            ):
+
+                error = "Invalid or non-existing ticket."
+
+    return render(
+        request,
+        "events/verify_ticket.html",
+        {
+            "ticket": ticket,
+            "error": error,
         }
     )

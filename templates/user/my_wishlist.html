@@ -1,0 +1,221 @@
+{% extends 'base/user_base.html' %}
+{% load static %}
+
+{% block title %}
+My Wishlist
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- ========================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================= -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="fa-solid fa-heart text-danger me-2"></i>
+
+                My Wishlist
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Events you have saved for later.
+
+            </p>
+
+        </div>
+
+        <span class="badge bg-danger fs-6 px-3 py-2">
+
+            {{ wishlist|length }} Events
+
+        </span>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- WISHLIST EVENTS -->
+    <!-- ========================= -->
+
+    {% if wishlist %}
+
+        <div class="row g-4">
+
+            {% for item in wishlist %}
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+
+                        <!-- EVENT IMAGE -->
+
+                        {% if item.event.image %}
+
+                            <img
+                                src="{{ item.event.image.url }}"
+                                class="card-img-top"
+                                alt="{{ item.event.event_name }}"
+                                style="height:220px; object-fit:cover;"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{% static 'images/default-event.jpg' %}"
+                                class="card-img-top"
+                                alt="No Image"
+                                style="height:220px; object-fit:cover;"
+                            >
+
+                        {% endif %}
+
+
+                        <!-- CARD BODY -->
+
+                        <div class="card-body p-4">
+
+                            <!-- CATEGORY -->
+
+                            <span class="badge bg-primary mb-2">
+
+                                <i class="fa-solid fa-layer-group me-1"></i>
+
+                                {{ item.event.category.category_name }}
+
+                            </span>
+
+
+                            <!-- EVENT NAME -->
+
+                            <h5 class="fw-bold mb-3">
+
+                                {{ item.event.event_name }}
+
+                            </h5>
+
+
+                            <!-- DATE -->
+
+                            <div class="mb-2 text-muted">
+
+                                <i class="fa-solid fa-calendar-days text-success me-2"></i>
+
+                                <strong>Date:</strong>
+
+                                {{ item.event.start_date|date:"d M Y" }}
+
+                                -
+
+                                {{ item.event.end_date|date:"d M Y" }}
+
+                            </div>
+
+
+                            <!-- VENUE -->
+
+                            <div class="mb-3 text-muted">
+
+                                <i class="fa-solid fa-location-dot text-danger me-2"></i>
+
+                                <strong>Venue:</strong>
+
+                                {{ item.event.venue }}
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <!-- ACTIONS -->
+
+                            <div class="d-flex gap-2">
+
+                                <a
+                                    href="{% url 'user_event_detail' item.event.id %}"
+                                    class="btn btn-primary btn-sm flex-grow-1"
+                                >
+
+                                    <i class="fa-solid fa-eye me-1"></i>
+
+                                    View Event
+
+                                </a>
+
+
+                                <a
+                                    href="{% url 'remove_from_wishlist' item.event.id %}"
+                                    class="btn btn-outline-danger btn-sm"
+                                    title="Remove from Wishlist"
+                                >
+
+                                    <i class="fa-solid fa-heart-crack"></i>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <!-- ========================= -->
+        <!-- EMPTY WISHLIST -->
+        <!-- ========================= -->
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body text-center py-5">
+
+                <i class="fa-regular fa-heart fa-4x text-muted mb-4"></i>
+
+                <h4 class="fw-bold">
+
+                    Your Wishlist is Empty
+
+                </h4>
+
+                <p class="text-muted mb-4">
+
+                    Save events you are interested in and find them here later.
+
+                </p>
+
+                <a
+                    href="{% url 'user_event_list' %}"
+                    class="btn btn-primary px-4"
+                >
+
+                    <i class="fa-solid fa-calendar-days me-2"></i>
+
+                    Browse Events
+
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

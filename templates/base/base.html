@@ -109,32 +109,53 @@
         <!-- Footer -->
 
         {% include 'base/footer.html' %}
+
         {% include "base/theme_panel.html" %}
 
     </div>
 
 </div>
 
+
+<!-- ========================================= -->
 <!-- Bootstrap JS -->
+<!-- ========================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
+
+<!-- ========================================= -->
 <!-- Chart.js -->
+<!-- ========================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js">
+</script>
 
-<!-- jQuery (Required for Select2) -->
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- ========================================= -->
+<!-- jQuery -->
+<!-- ========================================= -->
 
+<script
+    src="https://code.jquery.com/jquery-3.7.1.min.js">
+</script>
+
+
+<!-- ========================================= -->
 <!-- Select2 JS -->
+<!-- ========================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
+</script>
 
-<!-- Custom JS -->
 
-<script src="{% static 'js/main.js' %}"></script>
+<!-- ========================================= -->
 <!-- Auto Hide Messages -->
+<!-- ========================================= -->
 
 <script>
 
@@ -152,8 +173,107 @@ setTimeout(function () {
 
 </script>
 
+
+<!-- ========================================= -->
+<!-- EventHub AI Chatbot -->
+<!-- ========================================= -->
+
+<div id="chatbot-container">
+
+    <!-- Floating Chatbot Button -->
+
+    <button
+        id="chatbot-toggle"
+        type="button"
+        title="EventHub AI Assistant">
+
+        <i class="fa-solid fa-robot"></i>
+
+    </button>
+
+
+    <!-- Chatbot Window -->
+
+    <div id="chatbot-window">
+
+        <!-- Chatbot Header -->
+
+        <div id="chatbot-header">
+
+            <div>
+
+                <i class="fa-solid fa-robot"></i>
+
+                <span>EventHub AI</span>
+
+            </div>
+
+            <button
+                id="chatbot-close"
+                type="button"
+                title="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- Chat Messages -->
+
+        <div id="chatbot-messages">
+
+            <div class="chatbot-message bot-message">
+
+                Hi! 👋 I'm EventHub AI.<br>
+                How can I help you?
+
+            </div>
+
+        </div>
+
+
+        <!-- Chat Input -->
+
+        <div id="chatbot-input-area">
+
+    {% csrf_token %}
+
+    <input
+        type="text"
+        id="chatbot-input"
+        placeholder="Type your message..."
+        autocomplete="off">
+
+    <button
+        id="chatbot-send"
+        type="button"
+        title="Send">
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+    </button>
+
+</div>
+
+    </div>
+
+</div>
+<!-- ========================================= -->
+<!-- Custom JS -->
+<!-- ========================================= -->
+
+<script src="{% static 'js/main.js' %}"></script>
+
+
+<!-- ========================================= -->
+<!-- Page Specific JavaScript -->
+<!-- ========================================= -->
+
 {% block js %}
 {% endblock %}
+
 
 </body>
 

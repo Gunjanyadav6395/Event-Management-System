@@ -9,7 +9,9 @@
 
 <div class="container py-5">
 
-    <!-- Header -->
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
 
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
 
@@ -31,8 +33,11 @@
 
         </div>
 
-        <a href="{% url 'user_event_list' %}"
-           class="btn btn-outline-primary rounded-pill px-4">
+
+        <a
+            href="{% url 'user_event_list' %}"
+            class="btn btn-outline-primary rounded-pill px-4"
+        >
 
             <i class="fa-solid fa-arrow-left me-2"></i>
 
@@ -43,13 +48,18 @@
     </div>
 
 
-    <!-- Main Card -->
+    <!-- ========================= -->
+    <!-- MAIN CARD -->
+    <!-- ========================= -->
 
     <div class="card border-0 shadow-lg rounded-4 overflow-hidden event-detail-card">
 
         <div class="row g-0">
 
-            <!-- Image -->
+
+            <!-- ========================= -->
+            <!-- EVENT IMAGE -->
+            <!-- ========================= -->
 
             <div class="col-lg-5 position-relative">
 
@@ -57,19 +67,25 @@
 
                     <img
                         src="{{ event.image.url }}"
-                        class="img-fluid event-detail-image"
-                        alt="{{ event.event_name }}">
+                        class="img-fluid event-detail-image w-100"
+                        alt="{{ event.event_name }}"
+                    >
 
                 {% else %}
 
                     <img
                         src="{% static 'images/default-event.jpg' %}"
-                        class="img-fluid event-detail-image"
-                        alt="No Image">
+                        class="img-fluid event-detail-image w-100"
+                        alt="No Image"
+                    >
 
                 {% endif %}
 
+
                 <div class="event-detail-overlay"></div>
+
+
+                <!-- Registration Status -->
 
                 <div class="position-absolute top-0 end-0 m-3">
 
@@ -96,11 +112,16 @@
             </div>
 
 
-            <!-- Details -->
+            <!-- ========================= -->
+            <!-- EVENT DETAILS -->
+            <!-- ========================= -->
 
             <div class="col-lg-7">
 
                 <div class="p-4 p-lg-5">
+
+
+                    <!-- CATEGORY -->
 
                     <span class="badge bg-primary fs-6 mb-3">
 
@@ -110,13 +131,24 @@
 
                     </span>
 
+
+                    <!-- EVENT NAME -->
+
                     <h2 class="fw-bold mb-4">
 
                         {{ event.event_name }}
 
                     </h2>
 
+
+                    <!-- ========================= -->
+                    <!-- EVENT INFORMATION -->
+                    <!-- ========================= -->
+
                     <div class="row gy-4">
+
+
+                        <!-- START DATE -->
 
                         <div class="col-md-6">
 
@@ -141,6 +173,8 @@
                         </div>
 
 
+                        <!-- END DATE -->
+
                         <div class="col-md-6">
 
                             <div class="detail-box">
@@ -164,6 +198,8 @@
                         </div>
 
 
+                        <!-- VENUE -->
+
                         <div class="col-md-6">
 
                             <div class="detail-box">
@@ -186,6 +222,8 @@
 
                         </div>
 
+
+                        <!-- PRIORITY -->
 
                         <div class="col-md-6">
 
@@ -215,6 +253,10 @@
                     <hr class="my-4">
 
 
+                    <!-- ========================= -->
+                    <!-- DESCRIPTION -->
+                    <!-- ========================= -->
+
                     <h5 class="fw-bold">
 
                         <i class="fa-solid fa-circle-info text-primary me-2"></i>
@@ -230,47 +272,106 @@
                     </p>
 
 
+                    <!-- ========================= -->
+                    <!-- ACTION BUTTONS -->
+                    <!-- ========================= -->
+
                     <div class="mt-5 d-flex gap-3 flex-wrap">
+
+
+                        <!-- REGISTER -->
 
                         {% if event.status %}
 
-    {% if registered %}
+                            {% if registered %}
 
-        <button class="btn btn-success px-5" disabled>
+                                <button
+                                    class="btn btn-success px-4"
+                                    disabled
+                                >
 
-            <i class="fa-solid fa-circle-check me-2"></i>
+                                    <i class="fa-solid fa-circle-check me-2"></i>
 
-            Already Registered
+                                    Already Registered
 
-        </button>
+                                </button>
 
-    {% else %}
+                            {% else %}
 
-        <a href="{% url 'register_event' event.id %}"
-           class="btn btn-primary px-5">
+                                <a
+                                    href="{% url 'register_event' event.id %}"
+                                    class="btn btn-primary px-4"
+                                >
 
-            <i class="fa-solid fa-user-plus me-2"></i>
+                                    <i class="fa-solid fa-user-plus me-2"></i>
 
-            Register Now
+                                    Register Now
 
-        </a>
+                                </a>
 
-    {% endif %}
+                            {% endif %}
 
-{% else %}
+                        {% else %}
 
-    <button class="btn btn-secondary px-5" disabled>
+                            <button
+                                class="btn btn-secondary px-4"
+                                disabled
+                            >
 
-        <i class="fa-solid fa-lock me-2"></i>
+                                <i class="fa-solid fa-lock me-2"></i>
 
-        Registration Closed
+                                Registration Closed
 
-    </button>
+                            </button>
 
-{% endif %}
+                        {% endif %}
 
-                        <a href="{% url 'user_event_list' %}"
-                           class="btn btn-outline-dark px-5">
+
+                        <!-- ========================= -->
+                        <!-- WISHLIST -->
+                        <!-- ========================= -->
+
+                        {% if user.is_authenticated %}
+
+                            {% if event.id in wishlist_event_ids %}
+
+                                <a
+                                    href="{% url 'remove_from_wishlist' event.id %}"
+                                    class="btn btn-danger px-4"
+                                >
+
+                                    <i class="fa-solid fa-heart-crack me-2"></i>
+
+                                    Remove from Wishlist
+
+                                </a>
+
+                            {% else %}
+
+                                <a
+                                    href="{% url 'add_to_wishlist' event.id %}"
+                                    class="btn btn-outline-danger px-4"
+                                >
+
+                                    <i class="fa-regular fa-heart me-2"></i>
+
+                                    Add to Wishlist
+
+                                </a>
+
+                            {% endif %}
+
+                        {% endif %}
+
+
+                        <!-- BROWSE EVENTS -->
+
+                        <a
+                            href="{% url 'user_event_list' %}"
+                            class="btn btn-outline-dark px-4"
+                        >
+
+                            <i class="fa-solid fa-calendar-days me-2"></i>
 
                             Browse Events
 

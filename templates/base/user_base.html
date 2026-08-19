@@ -48,7 +48,11 @@
 
 <!-- User Navbar -->
 
-{% include 'base/user_navbar.html' %}
+{% if user.is_authenticated %}
+    {% include 'base/user_navbar.html' %}
+{% else %}
+    {% include 'base/public_navbar.html' %}
+{% endif %}
 
 <!-- Main Content -->
 

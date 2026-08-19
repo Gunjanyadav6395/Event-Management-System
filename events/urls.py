@@ -109,37 +109,51 @@ urlpatterns = [
         name="delete_event"
     ),
 
-    # =====================================
-    # EVENT MEMBER
-    # =====================================
+   # =====================================
+# EVENT MEMBER
+# =====================================
 
-    path(
-        "create-event-member/",
-        views.create_event_member,
-        name="create_event_member"
-    ),
+path(
+    "create-event-member/",
+    views.create_event_member,
+    name="create_event_member"
+),
 
-    path(
-        "event-member-list/",
-        views.event_member_list,
-        name="event_member_list"
-    ),
+path(
+    "event-member-list/",
+    views.event_member_list,
+    name="event_member_list"
+),
 
-    # =====================================
-    # EVENT WISH
-    # =====================================
+path(
+    "edit-event-member/<int:id>/",
+    views.edit_event_member,
+    name="edit_event_member"
+),
 
-    path(
-        "create-event-wish/",
-        views.create_event_wish,
-        name="create_event_wish"
-    ),
+path(
+    "delete-event-member/<int:id>/",
+    views.delete_event_member,
+    name="delete_event_member"
+),
+# =====================================
+# QR CODE SCANNER
+# =====================================
 
-    path(
-        "event-wish-list/",
-        views.event_wish_list,
-        name="event_wish_list"
-    ),
+path(
+    "scan-qr/",
+    views.scan_qr,
+    name="scan_qr"
+),
+# =====================================
+# QR CODE TICKET VERIFICATION
+# =====================================
+
+path(
+    "verify-ticket/<str:ticket_number>/",
+    views.verify_ticket,
+    name="verify_ticket"
+),
 
     # =====================================
     # EVENT WISH USER
@@ -239,6 +253,27 @@ urlpatterns = [
         "my-events/",
         views.my_registered_events,
         name="my_registered_events"
+    ),
+        # =====================================
+    # USER WISHLIST
+    # =====================================
+
+    path(
+        "wishlist/add/<int:id>/",
+        views.add_to_wishlist,
+        name="add_to_wishlist"
+    ),
+
+    path(
+        "wishlist/remove/<int:id>/",
+        views.remove_from_wishlist,
+        name="remove_from_wishlist"
+    ),
+
+    path(
+        "my-wishlist/",
+        views.my_wishlist,
+        name="my_wishlist"
     ),
     path(
     "event-ticket/<int:id>/",

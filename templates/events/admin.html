@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block title %}
 Admin Dashboard
@@ -19,6 +20,7 @@ Admin Dashboard
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                 <div>
+
                     <h3 class="fw-bold mb-1">
                         Admin Dashboard
                     </h3>
@@ -28,14 +30,22 @@ Admin Dashboard
                     </p>
 
                     <small class="text-muted">
+
                         <a href="{% url 'dashboard' %}"
                            class="text-decoration-none">
+
                             Home
+
                         </a>
+
                         /
+
                         Admin Dashboard
+
                     </small>
+
                 </div>
+
 
                 <div>
 
@@ -43,6 +53,7 @@ Admin Dashboard
                        class="btn btn-success">
 
                         <i class="bi bi-cash-stack"></i>
+
                         Manage Event Finance
 
                     </a>
@@ -94,6 +105,7 @@ Admin Dashboard
 
                     </div>
 
+
                     <a href="{% url 'category_list' %}"
                        class="btn btn-sm btn-outline-primary mt-3">
 
@@ -139,6 +151,7 @@ Admin Dashboard
                         </div>
 
                     </div>
+
 
                     <a href="{% url 'event_list' %}"
                        class="btn btn-sm btn-outline-success mt-3">
@@ -186,6 +199,7 @@ Admin Dashboard
 
                     </div>
 
+
                     <a href="{% url 'event_member_list' %}"
                        class="btn btn-sm btn-outline-warning mt-3">
 
@@ -216,9 +230,12 @@ Admin Dashboard
 
         </div>
 
+
         <div class="card-body">
 
             <div class="row g-3">
+
+                <!-- CREATE EVENT -->
 
                 <div class="col-md-3">
 
@@ -226,11 +243,15 @@ Admin Dashboard
                        class="btn btn-primary w-100 py-3">
 
                         <i class="bi bi-plus-circle"></i>
+
                         Create Event
 
                     </a>
 
                 </div>
+
+
+                <!-- CREATE CATEGORY -->
 
                 <div class="col-md-3">
 
@@ -238,11 +259,15 @@ Admin Dashboard
                        class="btn btn-outline-primary w-100 py-3">
 
                         <i class="bi bi-folder-plus"></i>
+
                         Create Category
 
                     </a>
 
                 </div>
+
+
+                <!-- ADD PARTICIPANT -->
 
                 <div class="col-md-3">
 
@@ -250,11 +275,15 @@ Admin Dashboard
                        class="btn btn-outline-success w-100 py-3">
 
                         <i class="bi bi-person-plus"></i>
+
                         Add Participant
 
                     </a>
 
                 </div>
+
+
+                <!-- EVENT FINANCE -->
 
                 <div class="col-md-3">
 
@@ -262,7 +291,24 @@ Admin Dashboard
                        class="btn btn-outline-success w-100 py-3">
 
                         <i class="bi bi-currency-rupee"></i>
+
                         Event Finance
+
+                    </a>
+
+                </div>
+
+
+                <!-- SCAN QR / VERIFY TICKET -->
+
+                <div class="col-md-3">
+
+                    <a href="{% url 'scan_qr' %}"
+                       class="btn btn-outline-dark w-100 py-3">
+
+                        <i class="bi bi-qr-code-scan"></i>
+
+                        Scan QR / Verify Ticket
 
                     </a>
 
@@ -296,6 +342,7 @@ Admin Dashboard
                     </small>
 
                 </div>
+
 
                 <a href="{% url 'event_member_list' %}"
                    class="btn btn-sm btn-outline-primary">
@@ -351,16 +398,22 @@ Admin Dashboard
                                 {{ participant.id }}
                             </td>
 
+
                             <td>
 
                                 <div class="fw-semibold">
+
                                     {{ participant.user.username }}
+
                                 </div>
+
 
                                 {% if participant.user.email %}
 
                                 <small class="text-muted">
+
                                     {{ participant.user.email }}
+
                                 </small>
 
                                 {% endif %}
@@ -421,7 +474,9 @@ Admin Dashboard
                                     </h5>
 
                                     <p class="mb-0">
+
                                         No event participants are available yet.
+
                                     </p>
 
                                 </div>
@@ -443,5 +498,7 @@ Admin Dashboard
     </div>
 
 </div>
+<script src="{% static 'js/chatbot.js' %}"></script>
+
 
 {% endblock %}

@@ -14,9 +14,15 @@ User Registration
 
             <div class="card shadow border-0 rounded-4">
 
-                <div class="card-header bg-primary text-white text-center">
+                <!-- ========================= -->
+                <!-- HEADER -->
+                <!-- ========================= -->
 
-                    <h3>Create Account</h3>
+                <div class="card-header bg-primary text-white text-center py-4">
+
+                    <h3 class="fw-bold mb-1">
+                        Create Account
+                    </h3>
 
                     <p class="mb-0">
                         Register to participate in events
@@ -24,53 +30,234 @@ User Registration
 
                 </div>
 
+
                 <div class="card-body p-4">
 
-                    <form method="POST">
+                    <!-- ========================= -->
+                    <!-- NON-FIELD ERRORS -->
+                    <!-- ========================= -->
+
+                    {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            <div class="fw-bold mb-1">
+                                <i class="fas fa-exclamation-circle me-1"></i>
+                                Please correct the following error:
+                            </div>
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <form method="POST" novalidate>
 
                         {% csrf_token %}
 
-                        <div class="mb-3">
 
-                            <label class="form-label">
+                        <!-- ========================= -->
+                        <!-- USERNAME -->
+                        <!-- ========================= -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="{{ form.username.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
                                 Username
+                                <span class="text-danger">*</span>
                             </label>
+
 
                             {{ form.username }}
 
+
+                            {% if form.username.errors %}
+
+                                <div class="text-danger small mt-2">
+
+                                    {% for error in form.username.errors %}
+
+                                        <div>
+                                            <i class="fas fa-exclamation-circle me-1"></i>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-text">
+                                    Choose a unique username.
+                                </div>
+
+                            {% endif %}
+
                         </div>
 
-                        <div class="mb-3">
 
-                            <label class="form-label">
+                        <!-- ========================= -->
+                        <!-- EMAIL -->
+                        <!-- ========================= -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="{{ form.email.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
                                 Email
+                                <span class="text-danger">*</span>
                             </label>
+
 
                             {{ form.email }}
 
+
+                            {% if form.email.errors %}
+
+                                <div class="text-danger small mt-2">
+
+                                    {% for error in form.email.errors %}
+
+                                        <div>
+                                            <i class="fas fa-exclamation-circle me-1"></i>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-text">
+                                    Enter a valid email address.
+                                </div>
+
+                            {% endif %}
+
                         </div>
 
-                        <div class="mb-3">
 
-                            <label class="form-label">
+                        <!-- ========================= -->
+                        <!-- PASSWORD -->
+                        <!-- ========================= -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="{{ form.password1.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
                                 Password
+                                <span class="text-danger">*</span>
                             </label>
+
 
                             {{ form.password1 }}
 
+
+                            {% if form.password1.errors %}
+
+                                <div class="text-danger small mt-2">
+
+                                    {% for error in form.password1.errors %}
+
+                                        <div>
+                                            <i class="fas fa-exclamation-circle me-1"></i>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-text mt-2">
+
+                                    <strong>Password must:</strong>
+
+                                    <ul class="mb-0 ps-3">
+
+                                        <li>Not be too similar to your personal information.</li>
+
+                                        <li>Contain at least 8 characters.</li>
+
+                                        <li>Not be a commonly used password.</li>
+
+                                        <li>Not consist entirely of numbers.</li>
+
+                                    </ul>
+
+                                </div>
+
+                            {% endif %}
+
                         </div>
 
-                        <div class="mb-3">
 
-                            <label class="form-label">
+                        <!-- ========================= -->
+                        <!-- CONFIRM PASSWORD -->
+                        <!-- ========================= -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="{{ form.password2.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
                                 Confirm Password
+                                <span class="text-danger">*</span>
                             </label>
+
 
                             {{ form.password2 }}
 
+
+                            {% if form.password2.errors %}
+
+                                <div class="text-danger small mt-2">
+
+                                    {% for error in form.password2.errors %}
+
+                                        <div>
+                                            <i class="fas fa-exclamation-circle me-1"></i>
+                                            {{ error }}
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-text">
+                                    Enter the same password again.
+                                </div>
+
+                            {% endif %}
+
                         </div>
 
-                        <button class="btn btn-primary w-100">
+
+                        <!-- ========================= -->
+                        <!-- CREATE ACCOUNT -->
+                        <!-- ========================= -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 py-2 fw-semibold"
+                        >
+
+                            <i class="fas fa-user-plus me-2"></i>
 
                             Create Account
 
@@ -78,16 +265,25 @@ User Registration
 
                     </form>
 
-                    <hr>
+
+                    <hr class="my-4">
+
+
+                    <!-- ========================= -->
+                    <!-- LOGIN -->
+                    <!-- ========================= -->
 
                     <div class="text-center">
 
-                        Already have an account?
+                        <span class="text-muted">
+                            Already have an account?
+                        </span>
 
-                        <a href="{% url 'login' %}">
-
+                        <a
+                            href="{% url 'login' %}"
+                            class="fw-semibold text-decoration-none"
+                        >
                             Login
-
                         </a>
 
                     </div>

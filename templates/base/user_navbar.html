@@ -4,10 +4,12 @@
 
     <div class="container">
 
-        <!-- Logo -->
+        <!-- ============================= -->
+        <!-- LOGO -->
+        <!-- ============================= -->
 
         <a class="navbar-brand fw-bold"
-           href="{% url 'user_event_list' %}">
+           href="{% url 'home' %}">
 
             <i class="fa-solid fa-calendar-days me-2"></i>
 
@@ -15,26 +17,48 @@
 
         </a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#userNavbar">
+
+        <!-- ============================= -->
+        <!-- MOBILE TOGGLE -->
+        <!-- ============================= -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#userNavbar"
+            aria-controls="userNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
         </button>
 
-        <div class="collapse navbar-collapse"
-             id="userNavbar">
 
-            <!-- Left Menu -->
+        <!-- ============================= -->
+        <!-- NAVBAR CONTENT -->
+        <!-- ============================= -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="userNavbar">
+
+
+            <!-- ============================= -->
+            <!-- LEFT MENU -->
+            <!-- ============================= -->
 
             <ul class="navbar-nav me-auto">
 
+
+                <!-- Home -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{% url 'user_event_list' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'home' %}">
 
                         <i class="fa-solid fa-house me-1"></i>
 
@@ -44,10 +68,14 @@
 
                 </li>
 
+
+                <!-- Browse Events -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{% url 'user_event_list' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'user_event_list' %}">
 
                         <i class="fa-solid fa-calendar-days me-1"></i>
 
@@ -57,12 +85,16 @@
 
                 </li>
 
+
+                <!-- My Events -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{% url 'my_registered_events' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'my_registered_events' %}">
 
-                        <i class="fa-solid fa-ticket me-1"></i>
+                        <i class="fa-solid fa-calendar-check me-1"></i>
 
                         My Events
 
@@ -70,10 +102,31 @@
 
                 </li>
 
+
+                <!-- My Wishlist -->
+
                 <li class="nav-item">
 
-                    <a class="nav-link"
-                       href="{% url 'contact' %}">
+                    <a
+                        class="nav-link"
+                        href="{% url 'my_wishlist' %}">
+
+                        <i class="fa-solid fa-heart me-1"></i>
+
+                        My Wishlist
+
+                    </a>
+
+                </li>
+
+
+                <!-- Contact -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="{% url 'contact' %}">
 
                         <i class="fa-solid fa-envelope me-1"></i>
 
@@ -85,16 +138,24 @@
 
             </ul>
 
-            <!-- Right Menu -->
+
+            <!-- ============================= -->
+            <!-- RIGHT MENU -->
+            <!-- ============================= -->
 
             <ul class="navbar-nav align-items-center">
 
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown">
+
+                    <!-- User -->
+
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
 
                         <i class="fa-solid fa-circle-user me-1"></i>
 
@@ -102,14 +163,23 @@
 
                     </a>
 
+
+                    <!-- ============================= -->
+                    <!-- USER DROPDOWN -->
+                    <!-- ============================= -->
+
                     <ul class="dropdown-menu dropdown-menu-end">
+
+
+                        <!-- My Events -->
 
                         <li>
 
-                            <a class="dropdown-item"
-                               href="{% url 'my_registered_events' %}">
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'my_registered_events' %}">
 
-                                <i class="fa-solid fa-ticket me-2"></i>
+                                <i class="fa-solid fa-calendar-check me-2"></i>
 
                                 My Events
 
@@ -117,18 +187,42 @@
 
                         </li>
 
+
+                        <!-- My Wishlist -->
+
                         <li>
 
-                            <a class="dropdown-item"
-   href="{% url 'user_profile' %}">
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'my_wishlist' %}">
 
-    <i class="fa-solid fa-user me-2"></i>
+                                <i class="fa-solid fa-heart me-2 text-danger"></i>
 
-    My Profile
+                                My Wishlist
 
-</a>
+                            </a>
 
                         </li>
+
+
+                        <!-- My Profile -->
+
+                        <li>
+
+                            <a
+                                class="dropdown-item"
+                                href="{% url 'user_profile' %}">
+
+                                <i class="fa-solid fa-user me-2"></i>
+
+                                My Profile
+
+                            </a>
+
+                        </li>
+
+
+                        <!-- Divider -->
 
                         <li>
 
@@ -136,10 +230,14 @@
 
                         </li>
 
+
+                        <!-- Logout -->
+
                         <li>
 
-                            <a class="dropdown-item text-danger"
-                               href="{% url 'logout' %}">
+                            <a
+                                class="dropdown-item text-danger"
+                                href="{% url 'logout' %}">
 
                                 <i class="fa-solid fa-right-from-bracket me-2"></i>
 

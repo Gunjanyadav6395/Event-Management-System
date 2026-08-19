@@ -7,6 +7,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('events.urls')),
+
+    path('chatbot/', include('chatbot.urls')),
 ]
 
 if settings.DEBUG:
