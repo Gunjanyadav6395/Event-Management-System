@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
+from django.utils import timezone
 
 from .models import (
     EventCategory,
@@ -159,6 +160,26 @@ def dashboard(request):
 @login_required
 def admin_dashboard(request):
 
+    # Recent data for notifications
+    recent_events = Event.objects.filter(
+        status=True
+    ).order_by("-created_at")[:5]
+
+    recent_categories = EventCategory.objects.filter(
+        status="Active"
+    ).order_by("-created_at")[:5]
+
+    recent_members = EventMember.objects.filter(
+        status=True
+    ).order_by("-created_at")[:5]
+
+    # Total notification count
+    notification_count = (
+        recent_events.count() + 
+        recent_categories.count() + 
+        recent_members.count()
+    )
+
     context = {
 
         "total_categories": EventCategory.objects.count(),
@@ -169,6 +190,12 @@ def admin_dashboard(request):
             "user",
             "event"
         ).order_by("-created_at"),
+
+        # NEW: Notification data
+        "recent_events": recent_events,
+        "recent_categories": recent_categories,
+        "recent_members": recent_members,
+        "notification_count": notification_count,
 
     }
 
@@ -181,8 +208,6 @@ def admin_dashboard(request):
         context,
 
     )
-
-
 # ===========================
 # CREATE EVENT CATEGORY
 # ===========================
@@ -1678,18 +1703,48 @@ def scan_qr(request):
 # ===========================
 
 @login_required
-def verify_ticket(request):
+def verify_ticket(request, ticket_number=None):
 
     ticket = None
     error = None
 
-    # Only Admin can access
+    # Only Admin / Staff can access
     if not request.user.is_staff and not request.user.is_superuser:
+
         return redirect("user_event_list")
 
-    if request.method == "POST":
+    # Ticket number URL se aaye
+    if ticket_number:
 
-        ticket_number = request.POST.get("ticket_number")
+        try:
+
+            member_id = int(
+                ticket_number.replace("EVT-", "")
+            )
+
+            ticket = EventMember.objects.select_related(
+                "user",
+                "event",
+                "event__category",
+            ).get(
+                id=member_id,
+                status=True,
+            )
+
+        except (
+            ValueError,
+            EventMember.DoesNotExist
+        ):
+
+            error = "Invalid or non-existing ticket."
+
+    # Ticket number form se aaye
+    elif request.method == "POST":
+
+        ticket_number = request.POST.get(
+            "ticket_number",
+            ""
+        ).strip()
 
         if ticket_number:
 
@@ -1704,7 +1759,8 @@ def verify_ticket(request):
                     "event",
                     "event__category",
                 ).get(
-                    id=member_id
+                    id=member_id,
+                    status=True,
                 )
 
             except (
@@ -1714,6 +1770,10 @@ def verify_ticket(request):
 
                 error = "Invalid or non-existing ticket."
 
+        else:
+
+            error = "Please enter a ticket number."
+
     return render(
         request,
         "events/verify_ticket.html",
@@ -1721,4 +1781,54 @@ def verify_ticket(request):
             "ticket": ticket,
             "error": error,
         }
+    )
+# ===========================
+# ADMIN CHECK-IN TICKET
+# ===========================
+
+@login_required
+def check_in_ticket(request, id):
+
+    # Only Admin / Staff can access
+    if not request.user.is_staff and not request.user.is_superuser:
+
+        return redirect("user_event_list")
+
+    ticket = get_object_or_404(
+        EventMember,
+        id=id,
+        status=True,
+    )
+
+    # Prevent duplicate check-in
+    if ticket.checked_in:
+
+        messages.warning(
+            request,
+            "This ticket has already been checked in."
+        )
+
+        return redirect(
+            "verify_ticket",
+            ticket_number=f"EVT-{ticket.id:06d}"
+        )
+
+    # Mark attendance
+    ticket.checked_in = True
+    ticket.checked_in_at = timezone.now()
+    ticket.save(
+        update_fields=[
+            "checked_in",
+            "checked_in_at",
+        ]
+    )
+
+    messages.success(
+        request,
+        "Ticket verified and participant checked in successfully."
+    )
+
+    return redirect(
+        "verify_ticket",
+        ticket_number=f"EVT-{ticket.id:06d}"
     )

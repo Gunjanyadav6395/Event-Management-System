@@ -17,34 +17,40 @@ User Login
 
                 <div class="card-body p-5">
 
+                    <!-- ========================= -->
+                    <!-- HEADER -->
+                    <!-- ========================= -->
+
                     <div class="text-center mb-4">
 
                         <i class="fa-solid fa-user-lock fa-3x text-primary mb-3"></i>
 
                         <h2 class="fw-bold">
-
                             Welcome Back
-
                         </h2>
 
                         <p class="text-muted">
-
                             Login to continue to EventHub
-
                         </p>
 
                     </div>
+
+
+                    <!-- ========================= -->
+                    <!-- LOGIN FORM -->
+                    <!-- ========================= -->
 
                     <form method="POST">
 
                         {% csrf_token %}
 
+
+                        <!-- USERNAME -->
+
                         <div class="mb-3">
 
                             <label class="form-label">
-
                                 Username
-
                             </label>
 
                             <input
@@ -56,32 +62,56 @@ User Login
 
                         </div>
 
-                        <div class="mb-4">
+
+                        <!-- PASSWORD -->
+
+                        <div class="mb-3">
 
                             <label class="form-label">
-
                                 Password
-
                             </label>
 
-                            <input
-                                type="password"
-                                name="password"
-                                class="form-control"
-                                placeholder="Enter Password"
-                                required>
+                            <div class="input-group">
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="loginPassword"
+                                    class="form-control"
+                                    placeholder="Enter Password"
+                                    required>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword('loginPassword', this)"
+                                    title="Show/Hide Password">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </button>
+
+                            </div>
 
                         </div>
+
+
+                        <!-- FORGOT PASSWORD -->
+
                         <div class="text-end mb-3">
 
-    <a href="{% url 'password_reset' %}"
-       class="text-decoration-none">
+                            <a
+                                href="{% url 'password_reset' %}"
+                                class="text-decoration-none">
 
-        Forgot Password?
+                                Forgot Password?
 
-    </a>
+                            </a>
 
-</div>
+                        </div>
+
+
+                        <!-- LOGIN BUTTON -->
 
                         <button
                             type="submit"
@@ -93,28 +123,60 @@ User Login
 
                         </button>
 
+
+                        <!-- SIGN UP -->
+
+                        <div class="text-center mt-3">
+
+                            <span class="text-muted">
+                                Don't have an account?
+                            </span>
+
+                            <a
+                                href="{% url 'register_user' %}"
+                                class="fw-semibold text-decoration-none">
+
+                                Sign up
+
+                            </a>
+
+                        </div>
+
+
                     </form>
 
-                    <hr class="my-4">
 
-                    <div class="text-center">
+                    <!-- ========================= -->
+                    <!-- GOOGLE LOGIN -->
+                    <!-- ========================= -->
 
-                        <p class="mb-2">
+                    <div class="text-center my-4">
 
-                            Don't have an account?
+                        <div class="d-flex align-items-center">
 
-                        </p>
+                            <hr class="flex-grow-1">
 
-                        <a href="{% url 'register_user' %}"
-                           class="btn btn-outline-success">
+                            <span class="px-3 text-muted small">
+                                OR
+                            </span>
 
-                            <i class="fa-solid fa-user-plus me-2"></i>
+                            <hr class="flex-grow-1">
 
-                            Create Account
-
-                        </a>
+                        </div>
 
                     </div>
+
+
+                    <a
+                        href="#"
+                        class="btn btn-outline-danger w-100">
+
+                        <i class="fa-brands fa-google me-2"></i>
+
+                        Continue with Google
+
+                    </a>
+
 
                 </div>
 
@@ -125,5 +187,37 @@ User Login
     </div>
 
 </div>
+
+
+<!-- ========================= -->
+<!-- SHOW / HIDE PASSWORD -->
+<!-- ========================= -->
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+    const icon = button.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>
 
 {% endblock %}

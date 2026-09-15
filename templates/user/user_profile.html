@@ -3,155 +3,120 @@
 {% load static %}
 
 {% block title %}
-User Profile
+My Profile
 {% endblock %}
 
 {% block content %}
 
-<div class="container">
-
+<div class="container py-4">
     <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
 
-        <div class="col-lg-8">
+            <!-- Profile Card -->
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
 
-            <div class="card shadow border-0 rounded-4">
+                    <!-- Header -->
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <i class="fas fa-user-circle fa-3x text-primary"></i>
+                        <h3 class="fw-bold mb-0">My Profile</h3>
+                    </div>
 
-                <div class="card-body p-5">
+                    <hr>
 
-                    <div class="text-center">
-
+                    <!-- Profile Picture -->
+                    <div class="text-center mb-4">
                         <img src="{% static 'images/default-user.png' %}"
-                             class="rounded-circle border shadow"
-                             width="130"
-                             height="130"
-                             alt="Profile">
+                             class="rounded-circle border shadow-sm"
+                             width="120"
+                             height="120"
+                             alt="Profile"
+                             style="object-fit: cover;">
+                    </div>
 
-                        <h3 class="mt-3 fw-bold">
-                            {{ request.user.username }}
-                        </h3>
+                    <!-- Profile Fields -->
+                    <div class="row g-3">
+                        
+                        <!-- Username -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Username</label>
+                            <p class="fw-semibold fs-5 mb-3">{{ request.user.username }}</p>
+                        </div>
 
-                        <p class="text-muted">
-                            {{ request.user.email }}
-                        </p>
+                        <!-- Full Name -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Full Name</label>
+                            <p class="fw-semibold fs-5 mb-3">
+                                {% if request.user.get_full_name %}
+                                    {{ request.user.get_full_name }}
+                                {% else %}
+                                    {{ request.user.username }}
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Email</label>
+                            <p class="fw-semibold fs-5 mb-3">{{ request.user.email }}</p>
+                        </div>
+
+                        <!-- Phone (if available) -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Phone</label>
+                            <p class="fw-semibold fs-5 mb-3">
+                                {% if request.user.profile.phone %}
+                                    {{ request.user.profile.phone }}
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Role</label>
+                            <p class="fw-semibold fs-5 mb-3">
+                                {% if request.user.is_superuser %}
+                                    <span class="badge bg-danger">Admin</span>
+                                {% elif request.user.is_staff %}
+                                    <span class="badge bg-primary">Staff</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">User</span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <!-- Joined On -->
+                        <div class="col-md-6">
+                            <label class="text-muted small fw-bold mb-1">Joined On</label>
+                            <p class="fw-semibold fs-5 mb-3">
+                                {{ request.user.date_joined|date:"d M Y" }}
+                            </p>
+                        </div>
 
                     </div>
 
                     <hr>
 
-                    <div class="row text-center">
-
-                        <div class="col-md-6 mb-4">
-
-                            <div class="p-4 rounded bg-light">
-
-                                <h2 class="text-primary">
-
-                                    {{ total_registered_events }}
-
-                                </h2>
-
-                                <p class="mb-0">
-
-                                    Registered Events
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6 mb-4">
-
-                            <div class="p-4 rounded bg-light">
-
-                                <h2 class="text-danger">
-
-                                    {{ total_wishlist }}
-
-                                </h2>
-
-                                <p class="mb-0">
-
-                                    Wishlist
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <table class="table table-bordered mt-4">
-
-                        <tr>
-
-                            <th width="35%">
-                                Username
-                            </th>
-
-                            <td>
-                                {{ request.user.username }}
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-                                Email
-                            </th>
-
-                            <td>
-                                {{ request.user.email }}
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>
-                                Joined On
-                            </th>
-
-                            <td>
-                                {{ request.user.date_joined|date:"d M Y" }}
-                            </td>
-
-                        </tr>
-
-                    </table>
-
-                    <div class="d-flex gap-2 mt-4">
-
-    <a href="{% url 'edit_profile' %}"
-       class="btn btn-primary">
-
-        <i class="fa-solid fa-user-pen me-2"></i>
-
-        Edit Profile
-
+                    <!-- Action Buttons -->
+<div class="d-flex gap-3 mt-3 flex-wrap">
+    <a href="{% url 'edit_profile' %}" class="btn btn-primary px-4">
+        <i class="fas fa-user-edit me-2"></i>Edit Profile
     </a>
-
-    <a href="{% url 'change_password' %}"
-       class="btn btn-warning text-dark">
-
-        <i class="fa-solid fa-key me-2"></i>
-
-        Change Password
-
+    <a href="{% url 'change_password' %}" class="btn btn-outline-warning px-4">
+        <i class="fas fa-key me-2"></i>Change Password
     </a>
-
+    <a href="{% url 'user_event_list' %}" class="btn btn-outline-secondary px-4">
+        <i class="fas fa-arrow-left me-2"></i>Back
+    </a>
 </div>
 
                 </div>
-
             </div>
 
         </div>
-
     </div>
-
 </div>
 
 {% endblock %}

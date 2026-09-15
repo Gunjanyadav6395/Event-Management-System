@@ -1,4 +1,5 @@
 from django import forms
+from datetime import date
 from django.contrib.auth.forms import (
     UserCreationForm,
     PasswordChangeForm,
@@ -141,40 +142,19 @@ class EventForm(forms.ModelForm):
     # --------------------------------------------------------
 
     def clean(self):
-
         cleaned_data = super().clean()
-
-        start_date = cleaned_data.get("start_date")
-        end_date = cleaned_data.get("end_date")
-
-        today = timezone.localdate()
-
-        # Start date cannot be in the past
-        if start_date and start_date < today:
-
-            self.add_error(
-                "start_date",
-                "Start date cannot be in the past."
-            )
-
-        # End date cannot be in the past
-        if end_date and end_date < today:
-
-            self.add_error(
-                "end_date",
-                "End date cannot be in the past."
-            )
-
-        # End date cannot be before start date
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+        today = date.today()
+    
+    # Fix: start_date is datetime, so use .date() for comparison
+        if start_date and start_date.date() < today:
+            raise forms.ValidationError("Start date cannot be in the past.")
+    
         if start_date and end_date and end_date < start_date:
-
-            self.add_error(
-                "end_date",
-                "End date cannot be before the start date."
-            )
-
+            raise forms.ValidationError("End date must be after start date.")
+    
         return cleaned_data
-
 
 # ============================================================
 # EVENT MEMBER FORM

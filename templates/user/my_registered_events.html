@@ -64,8 +64,8 @@
 
                                 <th>Category</th>
 
-                                <th>Event Date</th>
-
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Venue</th>
 
                                 <th>Status</th>
@@ -110,11 +110,28 @@
                                 </td>
 
 
-                                <!-- Event Date -->
+                                <!-- Start Date -->
 
                                 <td>
 
-                                    {{ member.event.event_date|date:"d M Y" }}
+                                    {{ member.event.start_date|date:"d M Y" }}
+                                    <br>
+                                    <small class="text-muted">
+                                        {{ member.event.start_date|time:"h:i A" }}
+                                    </small>
+
+                                </td>
+
+
+                                <!-- End Date -->
+
+                                <td>
+
+                                    {{ member.event.end_date|date:"d M Y" }}
+                                    <br>
+                                    <small class="text-muted">
+                                        {{ member.event.end_date|time:"h:i A" }}
+                                    </small>
 
                                 </td>
 

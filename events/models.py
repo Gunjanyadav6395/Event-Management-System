@@ -51,9 +51,10 @@ class Event(models.Model):
         on_delete=models.CASCADE
     )
 
-    start_date = models.DateField()
+    # CHANGE: DateField to DateTimeField (minimal change)
+    start_date = models.DateTimeField()  # Changed from DateField
 
-    end_date = models.DateField()
+    end_date = models.DateTimeField()    # Changed from DateField
 
     venue = models.CharField(max_length=200)
 
@@ -90,12 +91,14 @@ class EventMember(models.Model):
     )
 
     status = models.BooleanField(default=True)
+    checked_in = models.BooleanField(default=False)
+
+    checked_in_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.event.event_name}"
-
 
 # ---------------- EVENT WISH ----------------
 
@@ -140,7 +143,8 @@ class EventWishUser(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.event.event_name}"
 
-    # ---------------- CONTACT ----------------
+
+# ---------------- CONTACT ----------------
 
 class Contact(models.Model):
 
@@ -156,6 +160,8 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
 # ---------------- BUDGET & FINANCE ----------------
 
 class BudgetFinance(models.Model):
@@ -203,3 +209,54 @@ class BudgetFinance(models.Model):
 
     def __str__(self):
         return self.event.event_name
+
+
+# ---------------- NEW: EVENT REGISTRATION (for tickets) ----------------
+
+class EventRegistration(models.Model):
+    """Model to track user event registrations with ticket numbers"""
+    
+    STATUS_CHOICES = (
+        ('registered', 'Registered'),
+        ('attended', 'Attended'),
+        ('cancelled', 'Cancelled'),
+    )
+    
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='registrations'
+    )
+    
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name='registrations'
+    )
+    
+    registration_date = models.DateTimeField(auto_now_add=True)
+    
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='registered'
+    )
+    
+    ticket_number = models.CharField(
+        max_length=50,
+        unique=True,
+        blank=True
+    )
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.event.event_name}"
+    
+    def save(self, *args, **kwargs):
+        if not self.ticket_number:
+            import uuid
+            self.ticket_number = f"TKT-{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
+    
+    class Meta:
+        unique_together = ['user', 'event']
+        ordering = ['-registration_date']

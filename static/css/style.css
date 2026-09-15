@@ -776,3 +776,89 @@ body.dark-mode .btn-light {
   }
 
 }
+/* ==========================================
+   NAVBAR HOVER FIX - Text Visible on Hover
+========================================== */
+
+/* Navbar links - default state */
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+    padding: 0 18px !important;
+}
+
+/* Navbar links - hover state */
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 5px;
+}
+
+/* Navbar links - active/focus state */
+.navbar .nav-link:focus,
+.navbar .nav-link:active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dropdown toggle */
+.navbar .dropdown-toggle {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar .dropdown-toggle:hover {
+    color: #ffffff !important;
+}
+
+/* Navbar brand */
+.navbar-brand {
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #f8f9fa !important;
+    opacity: 0.9;
+}
+
+/* Dark mode navbar links */
+body.dark-mode .navbar .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body.dark-mode .navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Dropdown items - fix text visibility */
+.dropdown-item {
+    color: #333333 !important;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    color: #ffffff !important;
+    background-color: #0d6efd !important;
+}
+
+/* Dark mode dropdown */
+body.dark-mode .dropdown-item {
+    color: #ffffff !important;
+}
+
+body.dark-mode .dropdown-item:hover {
+    color: #ffffff !important;
+    background-color: #0d6efd !important;
+}
+
+/* Sidebar links - if any */
+#sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    transition: all 0.3s ease;
+}
+
+#sidebar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}

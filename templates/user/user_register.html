@@ -161,7 +161,22 @@ User Registration
                             </label>
 
 
-                            {{ form.password1 }}
+                            <div class="input-group">
+
+                                {{ form.password1 }}
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword('{{ form.password1.id_for_label }}', this)"
+                                    title="Show/Hide Password"
+                                >
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </button>
+
+                            </div>
 
 
                             {% if form.password1.errors %}
@@ -187,13 +202,21 @@ User Registration
 
                                     <ul class="mb-0 ps-3">
 
-                                        <li>Not be too similar to your personal information.</li>
+                                        <li>
+                                            Not be too similar to your personal information.
+                                        </li>
 
-                                        <li>Contain at least 8 characters.</li>
+                                        <li>
+                                            Contain at least 8 characters.
+                                        </li>
 
-                                        <li>Not be a commonly used password.</li>
+                                        <li>
+                                            Not be a commonly used password.
+                                        </li>
 
-                                        <li>Not consist entirely of numbers.</li>
+                                        <li>
+                                            Not consist entirely of numbers.
+                                        </li>
 
                                     </ul>
 
@@ -219,7 +242,22 @@ User Registration
                             </label>
 
 
-                            {{ form.password2 }}
+                            <div class="input-group">
+
+                                {{ form.password2 }}
+
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    onclick="togglePassword('{{ form.password2.id_for_label }}', this)"
+                                    title="Show/Hide Password"
+                                >
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </button>
+
+                            </div>
 
 
                             {% if form.password2.errors %}
@@ -297,5 +335,37 @@ User Registration
     </div>
 
 </div>
+
+
+<!-- ========================= -->
+<!-- SHOW / HIDE PASSWORD -->
+<!-- ========================= -->
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+    const icon = button.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>
 
 {% endblock %}

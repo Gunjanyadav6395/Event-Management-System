@@ -97,6 +97,8 @@ function onScanSuccess(decodedText, decodedResult) {
 
     console.log("QR Code:", decodedText);
 
+    const ticketNumber = decodedText.trim();
+
     document.getElementById("scan-result").innerHTML = `
 
         <div class="alert alert-success">
@@ -107,14 +109,28 @@ function onScanSuccess(decodedText, decodedResult) {
 
             <br>
 
-            <strong>Ticket:</strong> ${decodedText}
+            <strong>Ticket:</strong> ${ticketNumber}
+
+        </div>
+
+        <div class="d-grid mt-3">
+
+            <a
+                href="/verify-ticket/${encodeURIComponent(ticketNumber)}/"
+                class="btn btn-primary"
+            >
+
+                <i class="fa-solid fa-magnifying-glass me-2"></i>
+
+                Verify Ticket
+
+            </a>
 
         </div>
 
     `;
 
 }
-
 
 function onScanFailure(error) {
 

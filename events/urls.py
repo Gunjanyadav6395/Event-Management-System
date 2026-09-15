@@ -154,7 +154,11 @@ path(
     views.verify_ticket,
     name="verify_ticket"
 ),
-
+path(
+    "check-in-ticket/<int:id>/",
+    views.check_in_ticket,
+    name="check_in_ticket"
+),
     # =====================================
     # EVENT WISH USER
     # =====================================

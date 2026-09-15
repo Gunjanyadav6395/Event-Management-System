@@ -105,7 +105,54 @@ Verify Event Ticket | Event Management System
                             Participant registration has been verified.
 
                         </div>
+                        {% if ticket %}
 
+    {% if ticket.checked_in %}
+
+        <div class="alert alert-warning mt-3 mb-0">
+
+            <i class="fa-solid fa-clock-rotate-left me-2"></i>
+
+            <strong>Already Checked In</strong>
+
+            <br>
+
+            <small>
+                This ticket has already been checked in.
+            </small>
+
+        </div>
+
+    {% else %}
+
+        <div class="d-grid mt-3">
+
+            <form
+    method="POST"
+    action="{% url 'check_in_ticket' ticket.id %}"
+    class="d-grid mt-3"
+>
+
+    {% csrf_token %}
+
+    <button
+        type="submit"
+        class="btn btn-success"
+    >
+
+        <i class="fa-solid fa-user-check me-2"></i>
+
+        Check In Participant
+
+    </button>
+
+</form>
+
+        </div>
+
+    {% endif %}
+
+{% endif %}
 
                         <div class="card bg-light border-0 mt-3">
 
