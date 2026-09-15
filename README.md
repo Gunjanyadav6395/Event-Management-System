@@ -271,26 +271,42 @@ For production deployment, the project can be configured with a production-ready
 | `chatbot/`    | Gemini-powered chatbot functionality   |
 
 ---
-
 ## 📸 Screenshots
 
-Screenshots can be added here to showcase the main interfaces of the application.
+### 🏠 User Interface
 
-Recommended screenshots:
+| Home Page                          | Login                                |
+| ---------------------------------- | ------------------------------------ |
+| ![Home Page](screenshots/home.png) | ![Login Page](screenshots/login.png) |
 
-* Home page
-* User registration/login
-* User dashboard
-* Event listing
-* Event details
-* Wishlist
-* Registered events
-* Admin dashboard
-* Event management
-* Category management
-* Event member management
-* QR/ticket verification
-* AI chatbot
+| Sign Up                             | Registered Events                                     |
+| ----------------------------------- | ----------------------------------------------------- |
+| ![Sign Up](screenshots/sign_up.png) | ![Registered Users](screenshots/registered_users.png) |
+
+### ⚙️ Admin Dashboard & Management
+
+| Dashboard                                     | Manage Events                                   |
+| --------------------------------------------- | ----------------------------------------------- |
+| ![Admin Dashboard](screenshots/dashboard.png) | ![Manage Events](screenshots/manage_events.png) |
+
+| Category List                                   | Create Category                                     |
+| ----------------------------------------------- | --------------------------------------------------- |
+| ![Category List](screenshots/category_list.png) | ![Create Category](screenshots/create_category.png) |
+
+| Member List                                 | Add Member                                |
+| ------------------------------------------- | ----------------------------------------- |
+| ![Member List](screenshots/member_list.png) | ![Add Member](screenshots/add_member.png) |
+
+| Notifications                            | Reports                            |
+| ---------------------------------------- | ---------------------------------- |
+| ![Notifications](screenshots/notify.png) | ![Reports](screenshots/report.png) |
+
+### 🎟️ Ticket Verification
+
+![Ticket Verification](screenshots/Ticket_Verify.png)
+
+> Screenshots demonstrate the key user, administration, event management, reporting, and ticket verification features of EventHub.
+
 
 ---
 
